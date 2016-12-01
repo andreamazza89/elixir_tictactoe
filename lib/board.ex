@@ -6,7 +6,22 @@ defmodule Board do
 
   def status(board) do
     rows_cols_diags = get_rows(board) ++ get_columns(board) ++ get_diagonals(board)
-    report(rows_cols_diags)
+    cond do
+      any_winning_collection?(rows_cols_diags, :x) -> {:win, :x}
+      any_winning_collection?(rows_cols_diags, :o) -> {:win, :o}
+      all_cells_have_a_mark?(rows_cols_diags) -> :draw
+      true -> :incomplete
+    end
+  end
+
+  defp any_winning_collection?(rows_cols_diags, mark) do
+    cell_has_mark? = fn(cell) -> cell === mark end
+    all_cells_same_mark? = fn(collection) -> Enum.all?(collection, cell_has_mark?) end
+    Enum.any?(rows_cols_diags, all_cells_same_mark?)
+  end
+
+  defp all_cells_have_a_mark?(rows_cols_diags) do
+    Enum.all?(List.flatten(rows_cols_diags), fn(cell) -> cell !== :empty end)
   end
 
   defp get_rows([a,b,c,d,e,f,g,h,i]) do
@@ -19,15 +34,6 @@ defmodule Board do
 
   defp get_diagonals([a,b,c,d,e,f,g,h,i]) do
     [[a,e,i],[g,e,c]]
-  end
-
-  defp report(rows_cols_diags) do
-    cond do
-      Enum.any?(rows_cols_diags, fn(collection) -> Enum.all?(collection, fn(cell) -> cell === :x end) end) -> {:win, :x}
-      Enum.any?(rows_cols_diags, fn(collection) -> Enum.all?(collection, fn(cell) -> cell === :o end) end) -> {:win, :o}
-      Enum.all?(List.flatten(rows_cols_diags), fn(cell) -> cell !== :empty end) -> :draw
-      true -> :incomplete
-    end
   end
 
 end
