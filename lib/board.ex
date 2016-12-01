@@ -4,4 +4,12 @@ defmodule Board do
     List.replace_at(board, cell_index, players_mark)
   end
 
+  def status([:x, :x, :x | tail]) do
+    {:win, :x}
+  end
+
+  def status(board) do
+    :incomplete
+  end
+
 end
