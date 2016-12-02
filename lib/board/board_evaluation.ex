@@ -1,8 +1,4 @@
-defmodule Board do
-
-  def add_move(board, {cell_index, players_mark}) do
-    List.replace_at(board, cell_index, players_mark)
-  end
+defmodule Board.Evaluation do
 
   def status(board) do
     rows_cols_diags = get_rows(board) ++ get_columns(board) ++ get_diagonals(board)
@@ -37,3 +33,4 @@ defmodule Board do
   end
 
 end
+
