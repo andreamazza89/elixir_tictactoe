@@ -6,7 +6,8 @@ defmodule Game.Engine do
     Game.StateManager.add_move(game_state_id, parsed_move)
   end
 
-  def play({player_one_stream, player_one_mark}, {player_two_stream, player_two_mark}, game_state_id) do
+  def play({player_one_stream, player_one_mark}, {player_two_stream, player_two_mark}) do
+    game_state_id = Game.StateManager.start_game
     do_play({player_one_stream, player_one_mark}, {player_two_stream, player_two_mark}, game_state_id)
   end
 
