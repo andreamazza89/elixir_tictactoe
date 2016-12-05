@@ -5,6 +5,7 @@ defmodule ElixirRomanNumerals.Mixfile do
     [app: :elixir_tictactoe,
      version: "0.1.0",
      elixir: "~> 1.3",
+     escript: [main_module: PlayGame],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]

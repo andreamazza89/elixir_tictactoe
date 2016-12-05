@@ -1,7 +1,7 @@
 defmodule Game.Engine do
 
   #hello side effects!
-  def next_move(game_state_id, input_stream, mark) do
+  def play_next_move(game_state_id, input_stream, mark) do
     parsed_move = UI.Utilities.get_next_move(game_state_id, input_stream, mark)
     Game.StateManager.add_move(game_state_id, parsed_move)
   end
@@ -18,7 +18,7 @@ defmodule Game.Engine do
       :draw ->
         IO.puts "It was a draw!"
       :incomplete ->
-        next_move(state_id, current_player_stream, current_player_mark)
+        play_next_move(state_id, current_player_stream, current_player_mark)
         do_play({next_player_stream, next_player_mark}, {current_player_stream, current_player_mark}, state_id)
     end
   end
