@@ -1,13 +1,14 @@
 defmodule IntegrationAddMoveTest do
   use ExUnit.Case
+  import TestHelpers
 
   test "adding a move to the board" do
     game_state_id = Game.StateManager.start_game
-    move = "A1" |> UI.InputParser.parse_move(:x)
-    Game.StateManager.add_move(game_state_id, move)
-    updated_board = Game.StateManager.get_board(game_state_id)
+    input_stream = create_input_stream("A1\n")
 
-    assert updated_board === [:x, :empty, :empty, :empty, :empty, :empty, :empty, :empty, :empty]
+    Game.Engine.next_move(game_state_id, input_stream)
+
+    assert get_cell_at(0, game_state_id) === :x
   end
   
 end
