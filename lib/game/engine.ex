@@ -1,9 +1,10 @@
 defmodule Game.Engine do
 
   #hello side effects!
-  def next_move(game_state_id, input_stream) do
+  def next_move(game_state_id, input_stream, mark) do
+    IO.puts Board.Presentation.render(Game.StateManager.get_board(game_state_id), [empty: " ", x: "x", o: "o"] )
     raw_move = IO.gets(input_stream, "\n") |> String.trim
-    parsed_move = raw_move |> UI.InputParser.parse_move(:x)
+    parsed_move = raw_move |> UI.InputParser.parse_move(mark)
     
     Game.StateManager.add_move(game_state_id, parsed_move)
   end
@@ -19,9 +20,7 @@ defmodule Game.Engine do
       :draw ->
         IO.puts "It was a draw!"
       :incomplete ->
-        IO.puts Board.Presentation.render(Game.StateManager.get_board(state_id), [empty: " ", x: "x", o: "o"] )
-        next_move = IO.gets(current_player_stream, "\n") |> String.trim |> IO.inspect |> UI.InputParser.parse_move(current_player_mark)
-        Game.StateManager.add_move(state_id, next_move)
+        next_move(state_id, current_player_stream, current_player_mark)
         do_play({next_player_stream, next_player_mark}, {current_player_stream, current_player_mark}, state_id)
     end
   end
