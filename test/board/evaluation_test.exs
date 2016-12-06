@@ -27,5 +27,6 @@ defmodule Board.EvaluationTest do
     test "a draw board is recognised" do
       assert Board.Evaluation.status(draw) === :draw
     end
+
   end
 end
