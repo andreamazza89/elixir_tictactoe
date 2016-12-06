@@ -12,15 +12,19 @@ defmodule Board.EvaluationTest do
       assert Board.Evaluation.status(no_winner_no_draw) === :incomplete
     end
 
-    test "a board with a winner is recognised (crosses wins EXAMPLE 1)" do
+    test "a board with a winner is recognised (crosses wins row example)" do
       assert Board.Evaluation.status(crosses_wins_row) === {:win, :x}
     end
 
-    test "a board with a winner is recognised (crosses wins EXAMPLE 2)" do
+    test "a board with a winner is recognised (crosses wins column example)" do
       assert Board.Evaluation.status(crosses_wins_column) === {:win, :x}
     end
 
-    test "a board with a winner is recognised (naughts wins)" do
+    test "a board with a winner is recognised (crosses wins diagonal example)" do
+      assert Board.Evaluation.status(crosses_wins_diagonal) === {:win, :x}
+    end
+
+    test "a board with a winner is recognised (noughts wins)" do
       assert Board.Evaluation.status(noughts_wins) === {:win, :o}
     end
 
