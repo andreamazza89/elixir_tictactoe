@@ -5,31 +5,31 @@ defmodule BoardTest do
   describe "checking the board status" do
 
     test "an empty board is incomplete" do
-      assert Board.status(empty_board) === :incomplete
+      assert Board.status(create_board([x: [], o: []])) === :incomplete
     end
 
     test "a board with no winner nor draw is incomplete" do
-      assert Board.status(no_winner_no_draw) === :incomplete
+      assert Board.status(create_board([x: [1,5], o: [3]])) === :incomplete
     end
 
     test "a board with a winner is recognised (crosses wins row example)" do
-      assert Board.status(crosses_wins_row) === {:win, :x}
+      assert Board.status(create_board([x: [1,2,3], o: [4,5]])) === {:win, :x}
     end
 
     test "a board with a winner is recognised (crosses wins column example)" do
-      assert Board.status(crosses_wins_column) === {:win, :x}
+      assert Board.status(create_board([x: [1,4,7], o: [3,5]])) === {:win, :x}
     end
 
     test "a board with a winner is recognised (crosses wins diagonal example)" do
-      assert Board.status(crosses_wins_diagonal) === {:win, :x}
+      assert Board.status(create_board([x: [1,5,9], o: [3,4]])) === {:win, :x}
     end
 
     test "a board with a winner is recognised (noughts wins)" do
-      assert Board.status(noughts_wins) === {:win, :o}
+      assert Board.status(create_board([x: [4,5], o: [1,2,3]])) === {:win, :o}
     end
 
     test "a draw board is recognised" do
-      assert Board.status(draw) === :draw
+      assert Board.status(create_board([x: [2,5,6,7,9], o: [1,3,4,8]])) === :draw
     end
 
   end
@@ -38,13 +38,15 @@ defmodule BoardTest do
   describe "adding a move to the board" do
 
     test "updates the board accordingly(example 1)" do
-      assert Board.add_move(empty_board, {0, :x}) === 
-        [:x,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
+      empty_board = create_board([x: [], o: []])
+      expected_board = create_board([x: [1], o: []])
+      assert Board.add_move(empty_board, {0, :x}) ===  expected_board
     end
 
     test "updates the board accordingly(example 2)" do
-      assert Board.add_move(empty_board, {2, :x}) ===
-        [:empty,:empty,:x,:empty,:empty,:empty,:empty,:empty,:empty]
+      empty_board = create_board([x: [], o: []])
+      expected_board = create_board([x: [3], o: []])
+      assert Board.add_move(empty_board, {2, :x}) === expected_board
     end
   end
 

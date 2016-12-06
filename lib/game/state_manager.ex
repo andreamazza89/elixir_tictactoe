@@ -1,7 +1,7 @@
 defmodule Game.StateManager do
   
   def start_game do
-    {:ok, state_id} = Agent.start_link(fn -> [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty] end)
+    {:ok, state_id} = Agent.start_link(fn -> %Board{} end)
     state_id
   end
 

@@ -10,14 +10,14 @@ defmodule Game.StateManagerTest do
   test "retrieves the latest state" do
     game_state = Game.StateManager.start_game()
     
-    assert Game.StateManager.get_board(game_state) === [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
+    assert Game.StateManager.get_board(game_state) === %Board{}
   end
 
   test "updates the state with a move" do
     game_state = Game.StateManager.start_game()
     Game.StateManager.add_move(game_state, {0, :x})
   
-    assert Game.StateManager.get_board(game_state) === [:x,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
+    assert Game.StateManager.get_board(game_state) === %Board{cells: [:x,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]}
   end
 
 end

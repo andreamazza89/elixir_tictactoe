@@ -2,18 +2,9 @@ ExUnit.start()
 
 defmodule TestHelpers do
 
-  @empty_board [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
-  @no_winner_no_draw [:x,:empty,:o,:empty,:x,:empty,:empty,:empty,:empty]
-  @crosses_wins_row [:x,:x,:x,:o,:o,:empty,:empty,:empty,:empty]
-  @crosses_wins_column [:x,:empty,:o,:x,:o,:empty,:x,:empty,:empty]
-  @crosses_wins_diagonal [:x,:empty,:o,:o,:x,:empty,:empty,:empty,:x]
-  @noughts_wins [:o,:o,:o,:x,:x,:empty,:empty,:empty,:empty]
-  @draw [:x,:o,:x,:x,:o,:o,:o,:x,:x]
-
-
   def get_cell_at(index, game_state_id) do
-    board = Game.StateManager.get_board(game_state_id)
-    Enum.at(board, index)
+    %Board{cells: cells} = Game.StateManager.get_board(game_state_id)
+    Enum.at(cells, index)
   end
 
   def create_input_stream(lines) do
@@ -21,32 +12,22 @@ defmodule TestHelpers do
     input_stream
   end
 
-  def empty_board do
-    @empty_board
+  def create_board([x: cross_locations, o: noughts_locations]) do
+    cross_locations = cross_locations |> Enum.map(&(&1 - 1))
+    noughts_locations = noughts_locations |> Enum.map(&(&1 - 1))
+    cells = [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]  
+              |> multiple_update(cross_locations, :x) 
+              |> multiple_update(noughts_locations, :o)
+    %Board{cells: cells}
   end
 
-  def no_winner_no_draw do
-    @no_winner_no_draw
+  defp multiple_update(list, [first_udpate_index | other_indexes], value) do
+    updated_list = List.update_at(list, first_udpate_index, fn(_) -> value end)
+    multiple_update(updated_list, other_indexes, value)
   end
 
-  def crosses_wins_row do
-    @crosses_wins_row
-  end
-
-  def crosses_wins_column do
-    @crosses_wins_column
-  end
-
-  def crosses_wins_diagonal do
-    @crosses_wins_diagonal
-  end
-
-  def noughts_wins do
-    @noughts_wins
-  end
-
-  def draw do
-    @draw
+  defp multiple_update(list, [], _) do
+    list
   end
 
 end

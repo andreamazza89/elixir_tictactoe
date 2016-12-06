@@ -9,7 +9,7 @@ B d | e | f
   ----------
 C g | h | i "  
 
-  def render([a,b,c,d,e,f,g,h,i], mark_to_string) do
+  def render(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
     String.replace(@template, "a", mark_to_string[a]) 
      |> String.replace("b", mark_to_string[b]) 
      |> String.replace("c", mark_to_string[c]) 
