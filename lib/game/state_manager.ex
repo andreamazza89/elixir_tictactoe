@@ -1,7 +1,7 @@
 defmodule Game.StateManager do
   
   def start_game do
-    {:ok, state_id} = Agent.start_link(fn -> [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty] end)
+    {:ok, state_id} = Agent.start_link(fn -> %Board{} end)
     state_id
   end
 
@@ -10,7 +10,7 @@ defmodule Game.StateManager do
   end
 
   def add_move(state_id, move) do
-    Agent.update(state_id, fn(current_state) -> Board.Manipulation.add_move(current_state, move) end)
+    Agent.update(state_id, fn(current_state) -> Board.add_move(current_state, move) end)
   end
 
 end

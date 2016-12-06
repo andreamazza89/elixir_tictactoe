@@ -1,7 +1,15 @@
-defmodule Board.Evaluation do
+defmodule Board do
+  defstruct cells: [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
 
-  def status(board) do
-    rows_cols_diags = get_rows(board) ++ get_columns(board) ++ get_diagonals(board)
+  def add_move(board = %Board{}, {cell_index, players_mark}) do
+    old_cells = board.cells
+    new_cells = List.replace_at(old_cells, cell_index, players_mark)
+    %Board{board | cells: new_cells}
+  end
+
+  def status(board = %Board{}) do
+    cells = board.cells
+    rows_cols_diags = get_rows(cells) ++ get_columns(cells) ++ get_diagonals(cells)
     cond do
       any_winning_collection?(rows_cols_diags, :x) -> {:win, :x}
       any_winning_collection?(rows_cols_diags, :o) -> {:win, :o}
@@ -28,9 +36,8 @@ defmodule Board.Evaluation do
     [[a,d,g],[b,e,h],[c,f,i]]
   end
 
-  defp get_diagonals([a,b,c,d,e,f,g,h,i]) do
+  defp get_diagonals([a,_b,c,_d,e,_f,g,_h,i]) do
     [[a,e,i],[g,e,c]]
   end
 
 end
-
