@@ -6,7 +6,7 @@ defmodule TestHelpers do
   @no_winner_no_draw [:x,:empty,:o,:empty,:x,:empty,:empty,:empty,:empty]
   @crosses_wins_row [:x,:x,:x,:o,:o,:empty,:empty,:empty,:empty]
   @crosses_wins_column [:x,:empty,:o,:x,:o,:empty,:x,:empty,:empty]
-  @naughts_wins [:o,:o,:o,:x,:x,:empty,:empty,:empty,:empty]
+  @noughts_wins [:o,:o,:o,:x,:x,:empty,:empty,:empty,:empty]
   @draw [:x,:o,:x,:x,:o,:o,:o,:x,:x]
 
 
@@ -36,8 +36,8 @@ defmodule TestHelpers do
     @crosses_wins_column
   end
 
-  def naughts_wins do
-    @naughts_wins
+  def noughts_wins do
+    @noughts_wins
   end
 
   def draw do

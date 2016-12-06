@@ -21,7 +21,7 @@ defmodule Board.EvaluationTest do
     end
 
     test "a board with a winner is recognised (naughts wins)" do
-      assert Board.Evaluation.status(naughts_wins) === {:win, :o}
+      assert Board.Evaluation.status(noughts_wins) === {:win, :o}
     end
 
     test "a draw board is recognised" do
