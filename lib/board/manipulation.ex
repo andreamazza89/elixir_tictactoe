@@ -1,4 +1,4 @@
-defmodule Board do
+defmodule Board.Manipulation do
 
   def add_move(board, {cell_index, players_mark}) do
     List.replace_at(board, cell_index, players_mark)
