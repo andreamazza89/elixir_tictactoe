@@ -1,4 +1,8 @@
-defmodule Board.Evaluation do
+defmodule Board do
+
+  def add_move(board, {cell_index, players_mark}) do
+    List.replace_at(board, cell_index, players_mark)
+  end
 
   def status(board) do
     rows_cols_diags = get_rows(board) ++ get_columns(board) ++ get_diagonals(board)
@@ -28,9 +32,8 @@ defmodule Board.Evaluation do
     [[a,d,g],[b,e,h],[c,f,i]]
   end
 
-  defp get_diagonals([a,b,c,d,e,f,g,h,i]) do
+  defp get_diagonals([a,_b,c,_d,e,_f,g,_h,i]) do
     [[a,e,i],[g,e,c]]
   end
 
 end
-

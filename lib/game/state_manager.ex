@@ -10,7 +10,7 @@ defmodule Game.StateManager do
   end
 
   def add_move(state_id, move) do
-    Agent.update(state_id, fn(current_state) -> Board.Manipulation.add_move(current_state, move) end)
+    Agent.update(state_id, fn(current_state) -> Board.add_move(current_state, move) end)
   end
 
 end

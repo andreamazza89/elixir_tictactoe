@@ -12,7 +12,7 @@ defmodule Game.Engine do
   end
 
   defp do_play({current_player_stream, current_player_mark}, {next_player_stream, next_player_mark}, state_id) do
-    case Game.StateManager.get_board(state_id) |> Board.Evaluation.status() do
+    case Game.StateManager.get_board(state_id) |> Board.status() do
       {:win, winner} ->
         IO.puts "The winner was: " <> Atom.to_string(winner)
       :draw ->
