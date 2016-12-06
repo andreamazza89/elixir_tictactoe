@@ -13,20 +13,21 @@ defmodule TestHelpers do
   end
 
   def create_board([x: cross_locations, o: noughts_locations]) do
-    cross_locations = cross_locations |> Enum.map(&(&1 - 1))
-    noughts_locations = noughts_locations |> Enum.map(&(&1 - 1))
+    subtract_one_from_all_elements = fn(list) -> Enum.map(list, &(&1 - 1)) end
+    cross_locations = subtract_one_from_all_elements.(cross_locations)
+    noughts_locations = subtract_one_from_all_elements.(noughts_locations)
     cells = [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]  
-              |> multiple_update(cross_locations, :x) 
-              |> multiple_update(noughts_locations, :o)
+              |> update_multiple_nodes(cross_locations, :x) 
+              |> update_multiple_nodes(noughts_locations, :o)
     %Board{cells: cells}
   end
 
-  defp multiple_update(list, [first_udpate_index | other_indexes], value) do
+  defp update_multiple_nodes(list, [first_udpate_index | other_indexes], value) do
     updated_list = List.update_at(list, first_udpate_index, fn(_) -> value end)
-    multiple_update(updated_list, other_indexes, value)
+    update_multiple_nodes(updated_list, other_indexes, value)
   end
 
-  defp multiple_update(list, [], _) do
+  defp update_multiple_nodes(list, [], _) do
     list
   end
 
