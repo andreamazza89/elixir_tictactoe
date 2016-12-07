@@ -5,7 +5,7 @@ defmodule Game do
     board_module.status(game.board)
   end
 
-  def get_current_player(game = %Game{players: {current_player, _next_player}}) do
+  def get_current_player(%Game{players: {current_player, _next_player}}) do
     current_player
   end
 

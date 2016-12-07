@@ -10,21 +10,20 @@ B d | e | f
   ----------
 C g | h | i "  
 
-  def play(player_one, player_two) do
-    empty_board = %Board{}
-    do_play(player_one, player_two, empty_board)
+  def play(game) do
+    do_play(game)
   end
 
-  defp do_play(player_one, player_two, board) do
-    case Board.status(board) do
+  defp do_play(game) do
+    case Game.status(game) do
       {:win, winner} ->
         announce_winner(winner)
       :draw ->
         announce_draw
       :incomplete ->
-        parsed_move = get_next_move(board, player_one)
-        updated_board = Board.add_move(board, parsed_move)
-        do_play(player_two, player_one, updated_board)
+        parsed_move = get_next_move(game)
+        updated_game = Game.mark_cell_for_current_player(game, parsed_move)
+        do_play(updated_game)
     end
   end
 
@@ -48,16 +47,17 @@ C g | h | i "
     IO.puts "It was a draw!"
   end
 
-  defp get_next_move(board, player) do
-    IO.puts render_board(board, [empty: " ", x: "x", o: "o"] )
-    IO.gets(player.stream, "\n") |> String.trim |> parse_move(player.mark)
+  defp get_next_move(game) do
+    current_player = Game.get_current_player(game)
+    IO.puts render_board(game.board, [empty: " ", x: "x", o: "o"] )
+    IO.gets(current_player.stream, "\n") |> String.trim |> parse_move()
   end
 
-  def parse_move(cartesian_cell_location, player_id) do
+  def parse_move(cartesian_cell_location) do
     row = String.first(cartesian_cell_location)
     column = cartesian_cell_location |> String.last |> String.to_integer
     linear_cell_location = @letter_to_number[row] + (column - 1)
-    {linear_cell_location, player_id}
+    linear_cell_location
   end
 
 end

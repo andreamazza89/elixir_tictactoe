@@ -45,8 +45,8 @@ defmodule GameTest do
       player_one = %Player.Human{mark: :x}
       player_two = %Player.Human{mark: :o}
       current_player = %Game{players: {player_one, player_two}}
-                        |> Game.mark_cell_for_current_player(0)
-                        |> Game.get_current_player() 
+                         |> Game.mark_cell_for_current_player(0)
+                         |> Game.get_current_player() 
 
       assert current_player.mark === :o
     end
@@ -55,9 +55,9 @@ defmodule GameTest do
       player_one = %Player.Human{mark: :x}
       player_two = %Player.Human{mark: :o}
       current_player = %Game{players: {player_one, player_two}}
-                        |> Game.mark_cell_for_current_player(0)
-                        |> Game.mark_cell_for_current_player(1)
-                        |> Game.get_current_player() 
+                         |> Game.mark_cell_for_current_player(0)
+                         |> Game.mark_cell_for_current_player(1)
+                         |> Game.get_current_player() 
 
       assert current_player.mark === :x
     end

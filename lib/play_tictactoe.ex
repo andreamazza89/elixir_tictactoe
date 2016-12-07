@@ -1,7 +1,8 @@
 defmodule PlayGame do
 
   def main(_) do
-    UI.Console.play({:stdio, :x}, {:stdio, :o})
+    game = %Game{}
+    UI.Console.play(game)
   end
 
 end
