@@ -8,11 +8,11 @@ defmodule Game.Engine do
   defp do_play({current_player_stream, current_player_mark}, {next_player_stream, next_player_mark}, board) do
     case Board.status(board) do
       {:win, winner} ->
-        IO.puts "The winner was: " <> Atom.to_string(winner)
+        UI.Console.announce_winner(winner)
       :draw ->
-        IO.puts "It was a draw!"
+        UI.Console.announce_draw
       :incomplete ->
-        parsed_move = UI.Utilities.get_next_move(board, current_player_stream, current_player_mark)
+        parsed_move = UI.Console.get_next_move(board, current_player_stream, current_player_mark)
         updated_board = Board.add_move(board, parsed_move)
         do_play({next_player_stream, next_player_mark}, {current_player_stream, current_player_mark}, updated_board)
     end
