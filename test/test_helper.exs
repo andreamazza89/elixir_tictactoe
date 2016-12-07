@@ -7,6 +7,11 @@ defmodule TestHelpers do
     Enum.at(cells, index)
   end
 
+  def create_human_player_with_moves([moves: moves, mark: mark]) do
+    moves_stream = create_input_stream(moves)
+    %Player.Human{stream: moves_stream, mark: mark}
+  end
+
   def create_input_stream(lines) do
     {:ok, input_stream} = StringIO.open(lines) 
     input_stream

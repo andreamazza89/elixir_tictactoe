@@ -10,22 +10,21 @@ B d | e | f
   ----------
 C g | h | i "  
 
-
-  def play({player_one_stream, player_one_mark}, {player_two_stream, player_two_mark}) do
+  def play(player_one, player_two) do
     empty_board = %Board{}
-    do_play({player_one_stream, player_one_mark}, {player_two_stream, player_two_mark}, empty_board)
+    do_play(player_one, player_two, empty_board)
   end
 
-  defp do_play({current_player_stream, current_player_mark}, {next_player_stream, next_player_mark}, board) do
+  defp do_play(player_one, player_two, board) do
     case Board.status(board) do
       {:win, winner} ->
         announce_winner(winner)
       :draw ->
         announce_draw
       :incomplete ->
-        parsed_move = get_next_move(board, current_player_stream, current_player_mark)
+        parsed_move = get_next_move(board, player_one)
         updated_board = Board.add_move(board, parsed_move)
-        do_play({next_player_stream, next_player_mark}, {current_player_stream, current_player_mark}, updated_board)
+        do_play(player_two, player_one, updated_board)
     end
   end
 
@@ -49,9 +48,9 @@ C g | h | i "
     IO.puts "It was a draw!"
   end
 
-  defp get_next_move(board, input_stream, mark) do
+  defp get_next_move(board, player) do
     IO.puts render_board(board, [empty: " ", x: "x", o: "o"] )
-    IO.gets(input_stream, "\n") |> String.trim |> parse_move(mark)
+    IO.gets(player.stream, "\n") |> String.trim |> parse_move(player.mark)
   end
 
   def parse_move(cartesian_cell_location, player_id) do
