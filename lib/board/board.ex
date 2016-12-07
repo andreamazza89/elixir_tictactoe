@@ -28,7 +28,7 @@ defmodule Board do
     Enum.all?(List.flatten(rows_cols_diags), fn(cell) -> cell !== :empty end)
   end
 
-  defp get_rows([a,b,c,d,e,f,g,h,i]) do
+  def get_rows([a,b,c,d,e,f,g,h,i]) do
     [[a,b,c],[d,e,f],[g,h,i]]
   end
 
