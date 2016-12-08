@@ -1,5 +1,5 @@
 defmodule Game do
-  defstruct board: %Board{}, players: {%Player.Human{mark: :x}, %Player.Human{mark: :o}}
+  defstruct board: %Board{}, players: {%Player.Human{mark: :x}, %Player.LinearCpu{mark: :o}}
 
   def status(game = %Game{}, board_module \\ Board) do
     board_module.status(game.board)

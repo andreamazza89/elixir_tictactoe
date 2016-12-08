@@ -2,6 +2,16 @@ defmodule GameTest do
   use ExUnit.Case
   import TestHelpers
 
+  describe "default" do
+
+    test "game defaults to human v machine players" do
+      game = %Game{}
+      {%Player.Human{}, %Player.LinearCpu{}}  = game.players
+    end
+
+  end
+
+
   describe "retrieving board status" do
 
     test "delegates to Board.status to find out the status of the game" do

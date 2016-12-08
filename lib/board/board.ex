@@ -7,6 +7,18 @@ defmodule Board do
     %Board{board | cells: new_cells}
   end
 
+  def available_moves(%Board{cells: cells}) do
+    cells |> Enum.with_index |> Enum.reduce([], &add_empty_cell_to_list/2) 
+  end
+
+  defp add_empty_cell_to_list({cell_status, cell_index}, available_moves) do
+    if (cell_status === :empty) do 
+      List.insert_at(available_moves, -1, cell_index) 
+    else
+      available_moves
+    end
+  end
+
   def status(board = %Board{}) do
     cells = board.cells
     rows_cols_diags = get_rows(cells) ++ get_columns(cells) ++ get_diagonals(cells)
