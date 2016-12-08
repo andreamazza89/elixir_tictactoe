@@ -7,15 +7,21 @@ defmodule TestHelpers do
     Enum.at(cells, index)
   end
 
+
   def create_human_player_with_moves([moves: moves, mark: mark]) do
     moves_stream = create_input_stream(moves)
     %Player.Human{stream: moves_stream, mark: mark}
+  end
+
+  def create_human_player_with_moves([moves: moves]) do
+    create_human_player_with_moves(moves: moves, mark: :x)
   end
 
   def create_input_stream(lines) do
     {:ok, input_stream} = StringIO.open(lines) 
     input_stream
   end
+
 
   def create_board([x: cross_locations, o: noughts_locations]) do
     subtract_one_from_all_elements = fn(list) -> Enum.map(list, &(&1 - 1)) end
