@@ -2,11 +2,10 @@ ExUnit.start()
 
 defmodule TestHelpers do
 
-  def get_cell_at(index, game_state_id) do
-    %Board{cells: cells} = Game.StateManager.get_board(game_state_id)
-    Enum.at(cells, index)
+  def get_cell_at(index, game) do
+    board = game.board
+    Enum.at(board.cells, index)
   end
-
 
   def create_human_player_with_moves([moves: moves, mark: mark]) do
     moves_stream = create_input_stream(moves)
@@ -21,7 +20,6 @@ defmodule TestHelpers do
     {:ok, input_stream} = StringIO.open(lines) 
     input_stream
   end
-
 
   def create_board([x: cross_locations, o: noughts_locations]) do
     subtract_one_from_all_elements = fn(list) -> Enum.map(list, &(&1 - 1)) end
@@ -40,15 +38,6 @@ defmodule TestHelpers do
 
   defp update_multiple_nodes(list, [], _) do
     list
-  end
-
-end
-
-
-defmodule SpyBoard do
-
-  def status(_) do
-    send self, :spy_board_received_status_call
   end
 
 end

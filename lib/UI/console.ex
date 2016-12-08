@@ -22,8 +22,7 @@ C g | h | i "
         announce_draw
       :incomplete ->
         announce_next_move(game)
-        next_move = get_next_move(game)
-        updated_game = Game.mark_cell_for_current_player(game, next_move)
+        updated_game = Game.make_next_move(game)
         do_play(updated_game)
     end
   end
@@ -52,11 +51,6 @@ C g | h | i "
     current_player = Game.get_current_player(game)
     IO.puts "It is " <> Atom.to_string(current_player.mark) <> "'s turn, please pick a move:"
     IO.puts render_board(game.board, [empty: " ", x: "x", o: "o"] )
-  end
-
-  defp get_next_move(game) do
-    current_player = Game.get_current_player(game)
-    Player.get_next_move(current_player, game)
   end
 
 end
