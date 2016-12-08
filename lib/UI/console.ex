@@ -22,8 +22,8 @@ C g | h | i "
         announce_draw
       :incomplete ->
         announce_next_move(game)
-        parsed_move = get_next_move(game)
-        updated_game = Game.mark_cell_for_current_player(game, parsed_move)
+        next_move = get_next_move(game)
+        updated_game = Game.mark_cell_for_current_player(game, next_move)
         do_play(updated_game)
     end
   end
@@ -56,15 +56,7 @@ C g | h | i "
 
   defp get_next_move(game) do
     current_player = Game.get_current_player(game)
-    #next_move = Player.get_move(game)
-    IO.gets(current_player.stream, "\n") |> String.trim |> parse_move()
-  end
-
-  def parse_move(cartesian_cell_location) do
-    row = String.first(cartesian_cell_location)
-    column = cartesian_cell_location |> String.last |> String.to_integer
-    linear_cell_location = @letter_to_number[row] + (column - 1)
-    linear_cell_location
+    Player.get_next_move(current_player, game)
   end
 
 end
