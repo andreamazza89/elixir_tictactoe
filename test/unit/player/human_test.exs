@@ -36,7 +36,7 @@ defmodule HumanPlayerTest do
     player_one = create_human_player_with_moves(moves: "A1\n")
     player_two = create_human_player_with_moves(moves: "A2\n")
 
-    game = %Game{players: {player_one, player_two}, board: %Board{}}
+    game = %Game.Engine{players: {player_one, player_two}, board: %Board{}}
 
     assert Player.get_next_move(player_one, game) === 0
     assert Player.get_next_move(player_two, game) === 1
