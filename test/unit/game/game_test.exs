@@ -29,6 +29,21 @@ defmodule GameTest do
 
   end
 
+  
+  describe "getting input from players" do
+
+    test "updates the game with the current player's move" do
+      stub_player =  %StubPlayerReturnsCellZero{mark: :x}
+      double_player = "double_player"
+      game = %Game{players: {stub_player, double_player}}
+
+      updated_game = Game.make_next_move(game)
+
+      assert get_cell_at(0, updated_game) === :x
+    end
+
+  end
+
 
   describe "turn management" do
     
