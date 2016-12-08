@@ -3,7 +3,7 @@ defmodule LinearCpuPlayerTest do
   import TestHelpers
 
   test "chooses the first move available example one" do
-    test_player = %Player.LinearCpuPlayer{}
+    test_player = %Player.LinearCpu{}
     double_player = "double_player"
     board = create_board([x: [], o: []])
     game = %Game{board: board, players: {test_player, double_player}}
@@ -12,7 +12,7 @@ defmodule LinearCpuPlayerTest do
   end
 
   test "chooses the first move available example two" do
-    test_player = %Player.LinearCpuPlayer{}
+    test_player = %Player.LinearCpu{}
     double_player = "double_player"
     board = create_board([x: [1], o: []])
     game = %Game{board: board, players: {test_player, double_player}}
