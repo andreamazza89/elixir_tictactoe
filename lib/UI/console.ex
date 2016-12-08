@@ -21,8 +21,9 @@ C g | h | i "
       :draw ->
         announce_draw
       :incomplete ->
-        parsed_move = get_next_move(game)
-        updated_game = Game.mark_cell_for_current_player(game, parsed_move)
+        announce_next_move(game)
+        next_move = get_next_move(game)
+        updated_game = Game.mark_cell_for_current_player(game, next_move)
         do_play(updated_game)
     end
   end
@@ -47,17 +48,15 @@ C g | h | i "
     IO.puts "It was a draw!"
   end
 
-  defp get_next_move(game) do
+  defp announce_next_move(game) do
     current_player = Game.get_current_player(game)
+    IO.puts "It is " <> Atom.to_string(current_player.mark) <> "'s turn, please pick a move:"
     IO.puts render_board(game.board, [empty: " ", x: "x", o: "o"] )
-    IO.gets(current_player.stream, "\n") |> String.trim |> parse_move()
   end
 
-  def parse_move(cartesian_cell_location) do
-    row = String.first(cartesian_cell_location)
-    column = cartesian_cell_location |> String.last |> String.to_integer
-    linear_cell_location = @letter_to_number[row] + (column - 1)
-    linear_cell_location
+  defp get_next_move(game) do
+    current_player = Game.get_current_player(game)
+    Player.get_next_move(current_player, game)
   end
 
 end

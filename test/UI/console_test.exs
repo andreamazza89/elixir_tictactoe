@@ -2,19 +2,6 @@ defmodule UI.ConsoleTest do
   use ExUnit.Case
   import TestHelpers
 
-  describe "parsing user input" do
-
-    test "converts the user's input into a move (example one)" do
-      assert UI.Console.parse_move("A1") === 0
-    end
-
-    test "converts the user's input into a move (example two)" do
-      assert UI.Console.parse_move("A2") === 1
-    end
-
-  end
-
-
   describe "rendering a board into a visual representation" do
 
     test "renders an empty board into a string" do
