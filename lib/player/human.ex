@@ -33,7 +33,7 @@ end
 
 defimpl Player, for: Player.Human do
 
-  def get_next_move(player, game) do
+  def get_next_move(player, _game) do
     raw_move = Player.Human.fetch_raw_next_move(player)
     Player.Human.parse_cartesian_coordinates(raw_move)
   end
