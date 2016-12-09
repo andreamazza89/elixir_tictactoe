@@ -27,6 +27,27 @@ C g | h | i "
     end
   end
 
+  def ask_game_mode(input_device) do
+    announce_game_mode_selection()
+    selected_game_mode = IO.gets(input_device, "\n") |> String.trim
+
+    case selected_game_mode do
+      "1" -> :human_v_human
+      "2" -> :human_v_linear_machine
+      "3" -> :linear_machine_v_linear_machine
+    end
+  end
+
+  def ask_swap_play_order(input_device) do
+    announce_swap_order_selection()
+    swap? = IO.gets(input_device, "\n") |> String.trim
+
+    case swap? do
+      "y" -> true
+       _ -> false
+    end
+  end
+
   def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
     String.replace(@visual_board_template, "a", mark_to_string[a]) 
      |> String.replace("b", mark_to_string[b]) 
@@ -40,17 +61,37 @@ C g | h | i "
   end
 
   defp announce_winner(winners_mark) do
-    IO.puts "The winner was: " <> Atom.to_string(winners_mark)
+    clear_and_print "The winner was: " <> Atom.to_string(winners_mark)
   end
 
   defp announce_draw do
-    IO.puts "It was a draw!"
+    clear_and_print "It was a draw!"
   end
 
   defp announce_next_move(game) do
     current_player = Game.get_current_player(game)
-    IO.puts "It is " <> Atom.to_string(current_player.mark) <> "'s turn, please pick a move:"
-    IO.puts render_board(game.board, [empty: " ", x: "x", o: "o"] )
+    clear_and_print "It is " <> Atom.to_string(current_player.mark) <> 
+                    "'s turn, please pick a move:" <>
+                    render_board(game.board, [empty: " ", x: "x", o: "o"] )
+  end
+
+  defp announce_game_mode_selection do
+    clear_and_print "Please select a game mode (enter mode number): \n" <>
+                    "  1 - human vs human\n" <>
+                    "  2 - human vs machine\n" <>
+                    "  3 - machine vs machine\n"
+  end
+
+  defp announce_swap_order_selection do
+    clear_and_print "Would you like to swap the playing order?"
+  end
+
+  defp clear_and_print(message) do
+    clear_screen = IO.ANSI.clear()
+    send_cursor_to_top = IO.ANSI.home()
+    IO.puts clear_screen
+    IO.puts send_cursor_to_top
+    IO.puts message 
   end
 
 end

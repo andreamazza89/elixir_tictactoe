@@ -2,6 +2,36 @@ defmodule UI.ConsoleTest do
   use ExUnit.Case
   import TestHelpers
 
+  describe "asking the user for game options" do
+
+    test "parses user-selected game mode, human v human" do
+      user = create_input_stream("1\n")
+      assert UI.Console.ask_game_mode(user) === :human_v_human
+    end
+
+    test "parses user-selected game mode, human v linear machine" do
+      user = create_input_stream("2\n")
+      assert UI.Console.ask_game_mode(user) === :human_v_linear_machine
+    end
+
+    test "parses user-selected game mode, linear machine v linear machine" do
+      user = create_input_stream("3\n")
+      assert UI.Console.ask_game_mode(user) === :linear_machine_v_linear_machine
+    end
+
+    test "parses user-selected swap choice, user wants swap" do
+      user = create_input_stream("y\n")
+      assert UI.Console.ask_swap_play_order(user) === true 
+    end
+
+    test "parses user-selected swap choice, user does not want to swap" do
+      user = create_input_stream("no\n")
+      assert UI.Console.ask_swap_play_order(user) === false 
+    end
+
+  end
+
+
   describe "rendering a board into a visual representation" do
 
     test "renders an empty board into a string" do

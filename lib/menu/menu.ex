@@ -5,11 +5,11 @@ defmodule Menu do
     game = 
       case mode do
         :human_v_human -> 
-          %Game{players: {%Player.Human{}, %Player.Human{}}}
+          %Game{players: {%Player.Human{mark: :x}, %Player.Human{mark: :o}}}
         :human_v_linear_machine -> 
-          %Game{players: {%Player.Human{}, %Player.LinearCpu{}}}
+          %Game{players: {%Player.Human{mark: :x}, %Player.LinearCpu{mark: :o}}}
         :linear_machine_v_linear_machine -> 
-          %Game{players: {%Player.LinearCpu{}, %Player.LinearCpu{}}}
+          %Game{players: {%Player.LinearCpu{mark: :x}, %Player.LinearCpu{mark: :o}}}
       end
 
     if swap? do
