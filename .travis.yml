@@ -7,3 +7,4 @@ script:
 - mix local.hex --force
 - mix deps.get
 - mix test
+- mix coveralls.travis
