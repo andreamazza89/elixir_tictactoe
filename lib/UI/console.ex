@@ -27,7 +27,11 @@ C g | h | i "
     end
   end
 
-  def ask_game_mode(input_device, try_again: try_again?) do
+  def ask_game_mode(input_device) do
+    do_ask_game_mode(input_device, try_again: false)
+  end
+
+  defp do_ask_game_mode(input_device, try_again: try_again?) do
     announce_game_mode_selection(try_again: try_again?)
     selected_game_mode = IO.gets(input_device, "\n") |> String.trim
 
@@ -35,7 +39,7 @@ C g | h | i "
       "1" -> :human_v_human
       "2" -> :human_v_linear_machine
       "3" -> :linear_machine_v_linear_machine
-       _  -> ask_game_mode(input_device, try_again: true)
+       _  -> do_ask_game_mode(input_device, try_again: true)
     end
   end
 
