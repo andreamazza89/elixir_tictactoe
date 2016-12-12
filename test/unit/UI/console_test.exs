@@ -6,17 +6,22 @@ defmodule UI.ConsoleTest do
 
     test "parses user-selected game mode, human v human" do
       user = create_input_stream("1\n")
-      assert UI.Console.ask_game_mode(user) === :human_v_human
+      assert UI.Console.ask_game_mode(user, try_again: false) === :human_v_human
     end
 
     test "parses user-selected game mode, human v linear machine" do
       user = create_input_stream("2\n")
-      assert UI.Console.ask_game_mode(user) === :human_v_linear_machine
+      assert UI.Console.ask_game_mode(user, try_again: false) === :human_v_linear_machine
     end
 
     test "parses user-selected game mode, linear machine v linear machine" do
       user = create_input_stream("3\n")
-      assert UI.Console.ask_game_mode(user) === :linear_machine_v_linear_machine
+      assert UI.Console.ask_game_mode(user, try_again: false) === :linear_machine_v_linear_machine
+    end
+
+    test "keeps asking until an available mode is selected" do
+      user = create_input_stream("9\n1\n")
+      assert UI.Console.ask_game_mode(user, try_again: false) === :human_v_human
     end
 
     test "parses user-selected swap choice, user wants swap (y)" do
