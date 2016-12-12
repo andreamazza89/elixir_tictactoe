@@ -2,10 +2,11 @@ defmodule Player.Human do
   defstruct stream: :stdio, mark: :x
 
   @capital_a 65
+  @valid_move_format ~r|^[a-zA-Z]{1}\d$|
 
   def fetch_raw_next_move(player) do
     raw_move = IO.gets(player.stream, "\n") 
-    if Regex.match?(~r|^[a-zA-Z]{1}\d$|, raw_move) do
+    if Regex.match?(@valid_move_format, raw_move) do
       raw_move
     else
       announce_invalid_input
@@ -45,7 +46,17 @@ defimpl Player, for: Player.Human do
 
   def get_next_move(player, game) do
     raw_move = Player.Human.fetch_raw_next_move(player)
-    Player.Human.parse_cartesian_coordinates(raw_move)
+    parsed_move = Player.Human.parse_cartesian_coordinates(raw_move)
+    if Game.is_move_available?(game, parsed_move) do
+      parsed_move
+    else
+      announce_move_already_taken
+      get_next_move(player, game) 
+    end
+  end
+
+  defp announce_move_already_taken do
+    IO.puts "Move already taken: please select alternative move"
   end
 
 end

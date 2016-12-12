@@ -20,5 +20,9 @@ defmodule Game do
     Game.mark_cell_for_current_player(game, cell_to_mark)
   end
 
+  def is_move_available?(game = %Game{}, move) do
+    moves_available = Board.available_moves(game.board)
+    Enum.member?(moves_available, move)
+  end
 
 end

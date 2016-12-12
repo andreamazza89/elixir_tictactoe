@@ -15,6 +15,13 @@ defmodule HumanPlayerTest do
     assert Player.Human.fetch_raw_next_move(player) === "A2\n"
   end
 
+  test "prompts the user again if the chosen move is not available" do
+    player = create_human_player_with_moves(moves: "A1\nA2\n")
+    game = %Game{board: create_board([x: [1], o: []])}
+
+    assert Player.get_next_move(player, game) === 1
+  end
+
   test "converts from cartesian coordinates to linear cell location, example one" do
     board_size = 3
     cartesian = "B1\n"
