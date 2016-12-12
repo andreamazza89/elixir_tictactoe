@@ -6,7 +6,7 @@ defmodule Player.Human do
   def fetch_raw_next_move(player) do
     raw_move = IO.gets(player.stream, "\n") 
     if Regex.match?(valid_move_format_regex, raw_move) do
-      raw_move
+      String.upcase(raw_move)
     else
       announce_invalid_input
       fetch_raw_next_move(player)
