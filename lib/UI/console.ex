@@ -46,7 +46,6 @@ C g | h | i "
   def ask_swap_play_order(input_device) do
     announce_swap_order_selection()
     swap? = IO.gets(input_device, "\n") |> String.trim
-
     Regex.match?(~r{^Y(es)?$}i, swap?)
   end
 
