@@ -20,7 +20,7 @@ defmodule UI.ConsoleTest do
     end
 
     test "keeps asking until an available mode is selected" do
-      user = create_input_stream("9\n1\n")
+      user = create_input_stream("9\ns\n!\n1\n")
       assert UI.Console.ask_game_mode(user) === :human_v_human
     end
 
