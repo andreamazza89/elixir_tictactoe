@@ -9,6 +9,12 @@ defmodule HumanPlayerTest do
     assert Player.Human.fetch_raw_next_move(player) === "A2\n"
   end
 
+  test "prompts the user again if input is not in the right format" do
+    player = create_human_player_with_moves(moves: "51\nA2\n")
+
+    assert Player.Human.fetch_raw_next_move(player) === "A2\n"
+  end
+
   test "converts from cartesian coordinates to linear cell location, example one" do
     board_size = 3
     cartesian = "B1\n"
