@@ -21,6 +21,16 @@ defmodule GameTest do
 
       assert_receive :spy_board_received_status_call
     end
+  
+    test "knows if a move is available" do
+      game = %Game{}
+      assert Game.is_move_available?(game, 0) === true
+    end
+
+    test "knows if a move is not available" do
+      game = %Game{board: create_board([x: [1], o: []])}
+      assert Game.is_move_available?(game, 0) === false
+    end
 
   end
 

@@ -28,24 +28,25 @@ C g | h | i "
   end
 
   def ask_game_mode(input_device) do
-    announce_game_mode_selection()
+    do_ask_game_mode(input_device, try_again: false)
+  end
+
+  defp do_ask_game_mode(input_device, try_again: try_again?) do
+    announce_game_mode_selection(try_again: try_again?)
     selected_game_mode = IO.gets(input_device, "\n") |> String.trim
 
     case selected_game_mode do
       "1" -> :human_v_human
       "2" -> :human_v_linear_machine
       "3" -> :linear_machine_v_linear_machine
+       _  -> do_ask_game_mode(input_device, try_again: true)
     end
   end
 
   def ask_swap_play_order(input_device) do
     announce_swap_order_selection()
     swap? = IO.gets(input_device, "\n") |> String.trim
-
-    case swap? do
-      "y" -> true
-       _ -> false
-    end
+    Regex.match?(~r{^Y(es)?$}i, swap?)
   end
 
   def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
@@ -75,8 +76,13 @@ C g | h | i "
                     render_board(game.board, [empty: " ", x: "x", o: "o"] )
   end
 
-  defp announce_game_mode_selection do
-    clear_and_print "Please select a game mode (enter mode number): \n" <>
+  defp announce_game_mode_selection(try_again: try_again?) do
+    clear_and_print (if try_again? do 
+                      "Invalid selection, please try again\n"
+                     else
+                      ""
+                     end) <>
+                    "Please select a game mode (enter mode number): \n" <>
                     "  1 - human vs human\n" <>
                     "  2 - human vs machine\n" <>
                     "  3 - machine vs machine\n"
