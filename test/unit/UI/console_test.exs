@@ -1,6 +1,30 @@
 defmodule UI.ConsoleTest do
   use ExUnit.Case
   import TestHelpers
+  import ExUnit.CaptureIO
+
+  describe "playing the game" do
+
+    test "announces the winner if there is one (crosses wins)" do
+      play = fn() -> UI.Console.play(%StubGameReturnsCrossesWinner{}) end
+
+      assert Regex.match?(~r{The winner was: x}, capture_io(play))
+    end
+
+    test "announces the winner if there is one (noughts wins)" do
+      play = fn() -> UI.Console.play(%StubGameReturnsNoughtsWinner{}) end
+
+      assert Regex.match?(~r{The winner was: o}, capture_io(play))
+    end
+
+    test "announces a draw" do
+      play = fn() -> UI.Console.play(%StubGameReturnsDraw{}) end
+
+      assert Regex.match?(~r{It was a draw!}, capture_io(play))
+    end
+
+  end
+
 
   describe "rendering a board into a visual representation" do
 
