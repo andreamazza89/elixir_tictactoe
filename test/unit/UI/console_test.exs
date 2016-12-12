@@ -19,12 +19,27 @@ defmodule UI.ConsoleTest do
       assert UI.Console.ask_game_mode(user) === :linear_machine_v_linear_machine
     end
 
-    test "parses user-selected swap choice, user wants swap" do
+    test "parses user-selected swap choice, user wants swap (y)" do
       user = create_input_stream("y\n")
       assert UI.Console.ask_swap_play_order(user) === true 
     end
 
-    test "parses user-selected swap choice, user does not want to swap" do
+    test "parses user-selected swap choice, user wants swap (Y)" do
+      user = create_input_stream("Y\n")
+      assert UI.Console.ask_swap_play_order(user) === true 
+    end
+
+    test "parses user-selected swap choice, user wants swap (Yes)" do
+      user = create_input_stream("Yes\n")
+      assert UI.Console.ask_swap_play_order(user) === true 
+    end
+
+    test "parses user-selected swap choice, user wants swap (yes)" do
+      user = create_input_stream("yes\n")
+      assert UI.Console.ask_swap_play_order(user) === true 
+    end
+
+    test "parses user-selected swap choice, user does not want to swap (no)" do
       user = create_input_stream("no\n")
       assert UI.Console.ask_swap_play_order(user) === false 
     end

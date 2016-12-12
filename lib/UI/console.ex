@@ -42,9 +42,9 @@ C g | h | i "
     announce_swap_order_selection()
     swap? = IO.gets(input_device, "\n") |> String.trim
 
-    case swap? do
-      "y" -> true
-       _ -> false
+    cond do
+      Regex.match?(~r{^Y(es)?$}i, swap?) -> true
+      true -> false
     end
   end
 
