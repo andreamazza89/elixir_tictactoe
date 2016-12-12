@@ -2,11 +2,10 @@ defmodule Player.Human do
   defstruct stream: :stdio, mark: :x
 
   @capital_a 65
-  @valid_move_format ~r|^[a-zA-Z]{1}\d$|
 
   def fetch_raw_next_move(player) do
     raw_move = IO.gets(player.stream, "\n") 
-    if Regex.match?(@valid_move_format, raw_move) do
+    if Regex.match?(valid_move_format_regex, raw_move) do
       raw_move
     else
       announce_invalid_input
@@ -38,6 +37,10 @@ defmodule Player.Human do
 
   defp announce_invalid_input do
     IO.puts "Invalid input format: please try again"
+  end
+
+  defp valid_move_format_regex(board_size \\ 3) do
+    ~r|^[a-zA-Z]{1}[1-#{board_size}]$|
   end
 
 end
