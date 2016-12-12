@@ -4,13 +4,13 @@ defmodule BoardTest do
 
   describe "adding a move to the board" do
 
-    test "updates the board accordingly(example 1)" do
+    test "updates the board with the given move(example 1)" do
       empty_board = create_board([x: [], o: []])
       expected_board = create_board([x: [1], o: []])
       assert Board.add_move(empty_board, {0, :x}) ===  expected_board
     end
 
-    test "updates the board accordingly(example 2)" do
+    test "updates the board with the given move(example 2)" do
       empty_board = create_board([x: [], o: []])
       expected_board = create_board([x: [3], o: []])
       assert Board.add_move(empty_board, {2, :x}) === expected_board
