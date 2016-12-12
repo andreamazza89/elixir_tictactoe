@@ -23,4 +23,5 @@ defmodule Menu do
   defp swap_players(%Game{players: {player_one, player_two}}) do
     %Game{players: {player_two, player_one}}
   end
+
 end
