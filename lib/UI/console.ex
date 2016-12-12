@@ -43,11 +43,7 @@ C g | h | i "
     announce_swap_order_selection()
     swap? = IO.gets(input_device, "\n") |> String.trim
 
-    if Regex.match?(~r{^Y(es)?$}i, swap?) do
-      true
-    else
-      false
-    end
+    Regex.match?(~r{^Y(es)?$}i, swap?)
   end
 
   def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
