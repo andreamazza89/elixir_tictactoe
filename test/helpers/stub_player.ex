@@ -8,3 +8,7 @@ defmodule StubPlayerReturnsCellZero do
   end
 
 end
+
+defmodule StubPlayer do
+  defstruct mark: :o
+end
