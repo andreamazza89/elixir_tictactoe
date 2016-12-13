@@ -85,7 +85,7 @@ C g | h | i "
                     "  2 - human vs dumb machine\n" <>
                     "  3 - dumb machine vs dumb machine\n" <>
                     "  4 - human vs clever machine\n" <>
-                    "  5 - dumb machine vs clever machine\n"
+                    "  5 - dumb machine vs clever machine\n" <>
                     "  6 - clever machine vs clever machine\n"
   end
 
