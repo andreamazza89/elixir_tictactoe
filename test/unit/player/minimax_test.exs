@@ -20,22 +20,13 @@ defmodule MiniMaxTest do
     assert Player.get_next_move(minimax_player, game) === 5
   end
 
-  test "chooses a move that makes a fork" do
-    minimax_player = %Player.MiniMax{mark: :x}
-    other_player_double = %StubPlayer{mark: :o} 
-    forkable_board = create_board(x: [3,7], o: [5, 9])
-    game = %Game{players: {minimax_player, other_player_double}, board: forkable_board} 
-
-    assert Player.get_next_move(minimax_player, game) === 0
-  end
-
   test "chooses a move that prevents a fork" do
     minimax_player = %Player.MiniMax{mark: :x}
     other_player_double = %StubPlayer{mark: :o} 
-    forkable_board = create_board(x: [5], o: [3, 7])
+    forkable_board = create_board(x: [1], o: [5, 9])
     game = %Game{players: {minimax_player, other_player_double}, board: forkable_board} 
 
-    assert Player.get_next_move(minimax_player, game) === 0
+    assert Player.get_next_move(minimax_player, game) === 2
   end
 
   test "chooses a move that prevents another fork" do
@@ -44,7 +35,7 @@ defmodule MiniMaxTest do
     forkable_board = create_board(x: [6], o: [1,9])
     game = %Game{players: {minimax_player, other_player_double}, board: forkable_board} 
 
-    assert Player.get_next_move(minimax_player, game) === 1
+    assert Player.get_next_move(minimax_player, game) === 4
   end
 
   test "chooses the topleft corner at the start of the game" do
