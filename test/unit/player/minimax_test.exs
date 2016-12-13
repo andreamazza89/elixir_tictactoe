@@ -23,26 +23,26 @@ defmodule MiniMaxTest do
   test "chooses a move that makes a fork" do
     minimax_player = %Player.MiniMax{mark: :x}
     other_player_double = %StubPlayer{mark: :o} 
-    winnable_board = create_board(x: [3,7], o: [5, 9])
-    game = %Game{players: {minimax_player, other_player_double}, board: winnable_board} 
+    forkable_board = create_board(x: [3,7], o: [5, 9])
+    game = %Game{players: {minimax_player, other_player_double}, board: forkable_board} 
 
     assert Player.get_next_move(minimax_player, game) === 0
   end
 
-  test "chooses a move that prevents a diagonal fork" do
+  test "chooses a move that prevents a fork" do
     minimax_player = %Player.MiniMax{mark: :x}
     other_player_double = %StubPlayer{mark: :o} 
-    winnable_board = create_board(x: [5], o: [3, 7])
-    game = %Game{players: {minimax_player, other_player_double}, board: winnable_board} 
+    forkable_board = create_board(x: [5], o: [3, 7])
+    game = %Game{players: {minimax_player, other_player_double}, board: forkable_board} 
 
     assert Player.get_next_move(minimax_player, game) === 0
   end
 
-  test "chooses a move that prevents another diagonal fork" do
+  test "chooses a move that prevents another fork" do
     minimax_player = %Player.MiniMax{mark: :x}
     other_player_double = %StubPlayer{mark: :o} 
-    winnable_board = create_board(x: [6], o: [1,9])
-    game = %Game{players: {minimax_player, other_player_double}, board: winnable_board} 
+    forkable_board = create_board(x: [6], o: [1,9])
+    game = %Game{players: {minimax_player, other_player_double}, board: forkable_board} 
 
     assert Player.get_next_move(minimax_player, game) === 1
   end
@@ -50,8 +50,8 @@ defmodule MiniMaxTest do
   test "chooses the topleft corner at the start of the game" do
     minimax_player = %Player.MiniMax{mark: :x}
     other_player_double = %StubPlayer{mark: :o} 
-    winnable_board = create_board(x: [], o: [])
-    game = %Game{players: {minimax_player, other_player_double}, board: winnable_board} 
+    empty_board = create_board(x: [], o: [])
+    game = %Game{players: {minimax_player, other_player_double}, board: empty_board} 
 
     assert Player.get_next_move(minimax_player, game) === 0
   end
@@ -59,8 +59,8 @@ defmodule MiniMaxTest do
   test "chooses a move that prevents an edge trap" do
     minimax_player = %Player.MiniMax{mark: :x}
     other_player_double = %StubPlayer{mark: :o} 
-    winnable_board = create_board(x: [5], o: [2, 4])
-    game = %Game{players: {minimax_player, other_player_double}, board: winnable_board} 
+    trappable_board = create_board(x: [5], o: [2, 4])
+    game = %Game{players: {minimax_player, other_player_double}, board: trappable_board} 
 
     assert Player.get_next_move(minimax_player, game) === 0
   end
