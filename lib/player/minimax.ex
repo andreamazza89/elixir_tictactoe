@@ -8,12 +8,12 @@ defmodule Player.MiniMax do
       if length(available_moves) === 9 do
         0
       else
-        rank_move_outcome_for_this_game = rank_move_outcome(game, player.mark, 0)
+        rank_move_outcome_for_this_game = rank_moves_outcome(game, player.mark, 0)
         Enum.max_by(available_moves, rank_move_outcome_for_this_game) 
       end
     end
 
-    defp rank_move_outcome(game, maximising_players_mark, depth) do
+    defp rank_moves_outcome(game, maximising_players_mark, depth) do
       fn(move) -> 
         next_game_state = Game.mark_cell_for_current_player(game, move) 
         if game_over?(next_game_state) do
@@ -30,19 +30,22 @@ defmodule Player.MiniMax do
 
     defp rate_game_outcome(game, maximising_players_mark, depth) do
       case Game.status(game) do
-        {:win, players_mark} -> 
-          if players_mark === maximising_players_mark do
-            10 - depth 
-          else
-            depth - 10
-          end
+        {:win, players_mark} -> rate_win_scenario(players_mark, maximising_players_mark, depth)
         :draw -> 0
+      end
+    end
+  
+    defp rate_win_scenario(players_mark, maximising_players_mark, depth) do
+      if players_mark === maximising_players_mark do
+        10 - depth 
+      else
+        depth - 10
       end
     end
 
     defp rate_intermediate_board_value(game, maximising_players_mark, depth) do
       available_moves = Board.available_moves(game.board)
-      rank_move_outcome_for_this_game = rank_move_outcome(game, maximising_players_mark, depth + 1)
+      rank_move_outcome_for_this_game = rank_moves_outcome(game, maximising_players_mark, depth + 1)
 
       if is_current_player_maximising?(game, maximising_players_mark) do
         Enum.max_by(available_moves, rank_move_outcome_for_this_game) 
