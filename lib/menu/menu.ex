@@ -8,8 +8,14 @@ defmodule GameFactory do
           %Game{players: {%Player.Human{mark: :x}, %Player.Human{mark: :o}}}
         :human_v_linear_machine -> 
           %Game{players: {%Player.Human{mark: :x}, %Player.LinearCpu{mark: :o}}}
+        :human_v_minimax_machine -> 
+          %Game{players: {%Player.Human{mark: :x}, %Player.MiniMax{mark: :o}}}
         :linear_machine_v_linear_machine -> 
           %Game{players: {%Player.LinearCpu{mark: :x}, %Player.LinearCpu{mark: :o}}}
+        :linear_machine_v_minimax_machine -> 
+          %Game{players: {%Player.LinearCpu{mark: :x}, %Player.MiniMax{mark: :o}}}
+        :minimax_machine_v_minimax_machine -> 
+          %Game{players: {%Player.MiniMax{mark: :x}, %Player.MiniMax{mark: :o}}}
       end
 
     if swap? do
