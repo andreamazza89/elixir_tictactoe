@@ -1,4 +1,4 @@
-defmodule Menu do
+defmodule GameFactory do
 
   def create_game([mode: mode, swap_order: swap?]) do
 
