@@ -9,19 +9,6 @@ B d | e | f
   ----------
 C g | h | i "  
 
-  def play(game) do
-    case Game.status(game) do
-      {:win, winner} ->
-        announce_winner(winner)
-      :draw ->
-        announce_draw
-      :incomplete ->
-        announce_next_move(game)
-        updated_game = Game.make_next_move(game)
-        play(updated_game)
-    end
-  end
-
   def ask_game_mode(input_device) do
     do_ask_game_mode(input_device, try_again: false)
   end

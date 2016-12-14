@@ -5,7 +5,7 @@ defmodule PlayGame do
     swap? = UI.Console.ask_swap_play_order(:stdio)
     game = GameFactory.create_game([mode: game_mode, swap_order: swap?])
     
-    UI.Console.play(game)
+    Game.Runner.game_loop(game, UI.Console)
   end
 
 end
