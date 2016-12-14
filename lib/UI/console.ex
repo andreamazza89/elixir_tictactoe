@@ -34,6 +34,9 @@ C g | h | i "
       "1" -> :human_v_human
       "2" -> :human_v_linear_machine
       "3" -> :linear_machine_v_linear_machine
+      "4" -> :human_v_minimax_machine
+      "5" -> :linear_machine_v_minimax_machine
+      "6" -> :minimax_machine_v_minimax_machine
        _  -> do_ask_game_mode(input_device, try_again: true)
     end
   end
@@ -79,8 +82,11 @@ C g | h | i "
                      end) <>
                     "Please select a game mode (enter mode number): \n" <>
                     "  1 - human vs human\n" <>
-                    "  2 - human vs machine\n" <>
-                    "  3 - machine vs machine\n"
+                    "  2 - human vs dumb machine\n" <>
+                    "  3 - dumb machine vs dumb machine\n" <>
+                    "  4 - human vs clever machine\n" <>
+                    "  5 - dumb machine vs clever machine\n" <>
+                    "  6 - clever machine vs clever machine\n"
   end
 
   defp announce_swap_order_selection do

@@ -30,6 +30,10 @@ defmodule Board do
     end
   end
 
+  def empty?(board = %Board{}) do
+    Enum.all?(board.cells, &(&1 === :empty))
+  end
+
   defp any_winning_collection?(rows_cols_diags, mark) do
     cell_has_mark? = fn(cell) -> cell === mark end
     all_cells_same_mark? = fn(collection) -> Enum.all?(collection, cell_has_mark?) end

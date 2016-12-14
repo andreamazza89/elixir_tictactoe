@@ -19,6 +19,21 @@ defmodule BoardTest do
   end
 
 
+  describe "empty board check" do
+
+    test "knows when it is empty" do
+      empty_board = create_board([x: [], o: []])
+      assert Board.empty?(empty_board) === true
+    end
+
+    test "knows when it is not empty" do
+      non_empty_board = create_board([x: [1], o: []])
+      assert Board.empty?(non_empty_board) === false
+    end
+
+  end
+
+
   describe "available moves" do
 
     test "all moves are available for an empty board" do
