@@ -59,7 +59,8 @@ C g | h | i "
       |> String.replace("i", mark_to_string[i]) 
   end
 
-  defp announce_winner(winners_mark) do
+  defp announce_winner(winner) do
+    winners_mark = winner.mark
     clear_and_print "The winner was: " <> Atom.to_string(winners_mark)
   end
 

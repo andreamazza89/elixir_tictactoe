@@ -30,7 +30,7 @@ defmodule Player.MiniMax do
 
     defp rate_game_outcome(game, maximising_players_mark, depth) do
       case Game.status(game) do
-        {:win, players_mark} -> rate_win_scenario(players_mark, maximising_players_mark, depth)
+        {:win, player} -> rate_win_scenario(player.mark, maximising_players_mark, depth)
         :draw -> 0
       end
     end

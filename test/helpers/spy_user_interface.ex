@@ -4,7 +4,7 @@ defmodule SpyUserInterface do
     send self, :spy_user_interface_received_announce_draw 
   end
 
-  def announce_winner(:x) do
+  def announce_winner("player_one") do
     send self, :spy_user_interface_received_announce_win_with_player_one 
   end
 

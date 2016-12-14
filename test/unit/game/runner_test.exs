@@ -15,7 +15,7 @@ defmodule RunnerTest do
 
     test "delegates to the UI when the game results in a win, passing the winner" do
       draw_board = create_board([x: [1,2,3], o: [4,5]])
-      draw_game = %Game{board: draw_board, players: {%Player.Human{mark: :x}, %Player.Human{mark: :o}}} 
+      draw_game = %Game{board: draw_board, players: {"player_two", "player_one"}} 
       user_interface = SpyUserInterface
       Game.Runner.game_loop(draw_game, user_interface)
   
