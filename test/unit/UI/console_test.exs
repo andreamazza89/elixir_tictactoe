@@ -1,6 +1,7 @@
 defmodule UI.ConsoleTest do
   use ExUnit.Case
   import TestHelpers
+  import PromptRegexes
 
   describe "asking the user for game options" do
 
@@ -47,6 +48,38 @@ defmodule UI.ConsoleTest do
     test "parses user-selected swap choice, user does not want to swap (no)" do
       user = create_input_stream("no\n")
       assert UI.Console.ask_swap_play_order(user) === false 
+    end
+
+  end
+
+
+  describe "prompts" do
+
+    test "prompts the current player for a move, showing the board" do 
+      empty_board = create_board([x: [], o: []])
+      player_one = %Player.Human{mark: :x}
+      player_two = "player_two"
+      game = %Game{board: empty_board, players: {player_one, player_two}}      
+      action = fn() -> UI.Console.announce_next_move(game) end
+  
+      assert_console_output_matches(clear_screen_regex, action)
+      assert_console_output_matches(next_move_prompt_regex, action)
+      assert_console_output_matches(empty_board_regex(game), action)
+    end
+
+    test "announces the winner" do
+      winner = %Player.Human{mark: :x}
+      action = fn() -> UI.Console.announce_winner(winner) end
+
+      assert_console_output_matches(clear_screen_regex, action)
+      assert_console_output_matches(announce_winner_regex(winner), action)
+    end
+
+    test "announces a draw" do
+      action = fn() -> UI.Console.announce_draw end
+
+      assert_console_output_matches(clear_screen_regex, action)
+      assert_console_output_matches(announce_draw_regex, action)
     end
 
   end

@@ -1,6 +1,12 @@
 ExUnit.start()
 
 defmodule TestHelpers do
+  use ExUnit.Case
+  import ExUnit.CaptureIO
+
+  def assert_console_output_matches(regex, action) do
+    assert Regex.match?(regex, capture_io(action)) 
+  end
 
   def get_cell_at(index, game) do
     board = game.board

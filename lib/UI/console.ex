@@ -59,16 +59,16 @@ C g | h | i "
       |> String.replace("i", mark_to_string[i]) 
   end
 
-  defp announce_winner(winner) do
+  def announce_winner(winner) do
     winners_mark = winner.mark
     clear_and_print "The winner was: " <> Atom.to_string(winners_mark)
   end
 
-  defp announce_draw do
+  def announce_draw do
     clear_and_print "It was a draw!"
   end
 
-  defp announce_next_move(game) do
+  def announce_next_move(game) do
     current_player = Game.get_current_player(game)
     clear_and_print "It is " <> Atom.to_string(current_player.mark) <> 
                     "'s turn, please pick a move:" <>
