@@ -34,6 +34,15 @@ C g | h | i "
     Regex.match?(~r{^Y(es)?$}i, swap?)
   end
 
+  def ask_play_again?(input_device) do
+    clear_and_print "Would you like to play again?"
+    user_input = IO.gets(input_device, "\n")
+    case user_input do
+      "y\n" -> true
+      "n\n" -> false
+    end
+  end
+
   def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
     String.replace(@visual_board_template, "a", mark_to_string[a]) 
       |> String.replace("b", mark_to_string[b]) 

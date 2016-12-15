@@ -5,7 +5,7 @@ defmodule PromptRegexes do
   end
 
   def empty_board_regex(game) do
-    ~r{#{UI.Console.render_board(game.board, [empty: " "])}\Z}
+    ~r{#{UI.Console.render_board(game.board, [empty: " "])}}
   end
 
   def next_move_prompt_regex do
@@ -18,5 +18,9 @@ defmodule PromptRegexes do
 
   def announce_draw_regex do
     ~r{It was a draw!} 
+  end
+  
+  def play_again_regex do
+    ~r{Would you like to play again?}
   end
 end

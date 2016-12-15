@@ -67,6 +67,26 @@ defmodule UI.ConsoleTest do
       assert_console_output_matches(empty_board_regex(game), action)
     end
 
+    test "prompts the current player to play again" do
+      input_stream = create_input_stream("y\nn\n")
+      action = fn() -> UI.Console.ask_play_again?(input_stream) end
+      
+      assert_console_output_matches(clear_screen_regex, action)
+      assert_console_output_matches(play_again_regex, action)
+    end
+
+    test "returns the parsed user choice (play again? yes!)" do
+      input_stream = create_input_stream("y\n")
+  
+      assert UI.Console.ask_play_again?(input_stream) === true
+    end
+
+    test "returns the parsed user choice (play again? no!)" do
+      input_stream = create_input_stream("n\n")
+  
+      assert UI.Console.ask_play_again?(input_stream) === false
+    end
+
     test "announces the winner" do
       winner = %Player.Human{mark: :x}
       action = fn() -> UI.Console.announce_winner(winner) end
