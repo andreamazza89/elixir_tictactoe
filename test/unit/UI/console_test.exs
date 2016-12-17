@@ -71,7 +71,6 @@ defmodule UI.ConsoleTest do
       input_stream = create_input_stream("y\nn\n")
       action = fn() -> UI.Console.ask_play_again?(input_stream) end
       
-      assert_console_output_matches(clear_screen_regex, action)
       assert_console_output_matches(play_again_regex, action)
     end
 

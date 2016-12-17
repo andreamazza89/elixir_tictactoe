@@ -6,13 +6,17 @@ defmodule Game.RunnerTest do
 
     test "creates the game as requested by the UI example one" do
       game_created = Game.Runner.setup_game(StubUserInterfaceWantsHumanVsHumanAndSwap, "double_input_device") 
-      expected_game = %Game{players: {%Player.Human{mark: :o}, %Player.Human{mark: :x}}}
+      player_one = %Player.Human{mark: :x, io: {StubUserInterfaceWantsHumanVsHumanAndSwap, "double_input_device"}}
+      player_two = %Player.Human{mark: :o, io: {StubUserInterfaceWantsHumanVsHumanAndSwap, "double_input_device"}}
+      expected_game = %Game{players: {player_two, player_one}}
       assert game_created === expected_game
     end
 
     test "creates the game as requested by the UI example two" do
       game_created = Game.Runner.setup_game(StubUserInterfaceWantsHumanVsLinearNoSwap, "double_input_device") 
-      expected_game = %Game{players: {%Player.Human{mark: :x}, %Player.LinearCpu{mark: :o}}}
+      player_one = %Player.Human{mark: :x, io: {StubUserInterfaceWantsHumanVsLinearNoSwap, "double_input_device"}}
+      player_two = %Player.LinearCpu{mark: :o}
+      expected_game = %Game{players: {player_one, player_two}}
       assert game_created === expected_game
     end
 

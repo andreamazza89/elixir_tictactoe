@@ -19,7 +19,7 @@ defmodule UI.ConsoleInputTest do
     assert UI.Console.ask_next_move(player_input, board_size, valid_input) === 4
   end
 
-  test "keeps asking the user until the input is valid (bad format)" do
+  test "keeps asking the user for a move until the input is valid (bad format)" do
     board_size = 3
     player_input = create_input_stream("ZZ\nA2\n")
     valid_input = [1]
@@ -27,7 +27,7 @@ defmodule UI.ConsoleInputTest do
     assert UI.Console.ask_next_move(player_input, board_size, valid_input) === 1
   end
 
-  test "keeps asking the user until the input is valid (invalid move)" do
+  test "keeps asking the user for a move until the input is valid (invalid move)" do
     board_size = 3
     player_input = create_input_stream("A1\nA2\n")
     valid_input = [1]
@@ -35,7 +35,7 @@ defmodule UI.ConsoleInputTest do
     assert UI.Console.ask_next_move(player_input, board_size, valid_input) === 1
   end
 
-  test "shows the error message when the user enters invalid input" do
+  test "shows the error message for a move when the user enters invalid input" do
     board_size = 3
     player_input = create_input_stream("A1\nA2\n")
     valid_input = [1]

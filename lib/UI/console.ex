@@ -86,7 +86,7 @@ C g | h | i "
   end
 
   def ask_play_again?(input_device) do
-    clear_and_print "Would you like to play again?"
+    print "Would you like to play again?"
     user_input = IO.gets(input_device, "\n")
     case user_input do
       "y\n" -> true
@@ -147,6 +147,10 @@ C g | h | i "
     IO.puts clear_screen
     IO.puts send_cursor_to_top
     IO.puts message 
+  end
+
+  defp print(message) do
+    IO.puts message
   end
 
 end

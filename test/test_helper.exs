@@ -18,6 +18,11 @@ defmodule TestHelpers do
     %Player.Human{io: {ui, moves_stream}, mark: mark}
   end
 
+  def create_human_player_with_moves([moves: moves, mark: mark]) do
+    moves_stream = create_input_stream(moves)
+    %Player.Human{io: {UI.Console, moves_stream}, mark: mark}
+  end
+
   def create_human_player_with_moves([moves: moves, ui: ui]) do
     create_human_player_with_moves(moves: moves, mark: :x, ui: ui)
   end
