@@ -2,10 +2,6 @@ defmodule ItegrationMachineVsMachineTest do
   use ExUnit.Case
   import TestHelpers
 
-#################################################################################
-#################################################################################
-#################################################################################
-#####################  I AM A SCAFFOLD ##########################################
   test "program exits at the end of a game" do
     input_stream = create_input_stream("n\n")
     game = GameFactory.create_game([mode: :linear_machine_v_linear_machine, swap_order: false]) 
@@ -14,13 +10,6 @@ defmodule ItegrationMachineVsMachineTest do
     assert catch_exit(play_game.()) === :game_over
   end
 
-
-
-
-##################################################################################
-##################################################################################
-##################################################################################
-#######################  I AM A SCAFFOLD ##########################################
   test "program executes again if the user wants to" do
     input_stream = create_input_stream("y\nn\n")
     game = GameFactory.create_game([mode: :linear_machine_v_linear_machine, swap_order: false]) 

@@ -1,5 +1,7 @@
 defmodule UI.Console do
 
+  @capital_a 65
+
   @visual_board_template "
   1 | 2 | 3 
   ----------
@@ -8,6 +10,55 @@ A a | b | c
 B d | e | f 
   ----------
 C g | h | i "  
+
+  def ask_next_move(input_device, board_size, valid_input) do
+    fetch_input = fn() -> 
+                    raw_move = ask_for_raw_move(input_device)  
+                    parsed_move = parse_cartesian_coordinates(raw_move, board_size) 
+                  end 
+    error_message = "Invalid move: please try again."
+    validate_input(fetch_input, valid_input, error_message)
+  end
+
+  defp validate_input(fetch_input, valid_input, error_message) do
+    input = fetch_input.()
+    if Enum.member?(valid_input, input) do
+      input
+    else
+      IO.puts error_message
+      validate_input(fetch_input, valid_input, error_message)
+    end
+  end
+
+  defp ask_for_raw_move(input_device) do
+    IO.gets(input_device, "\n")
+  end
+
+  defp parse_cartesian_coordinates(coordinates, board_size) do
+    if Regex.match?(~r{[a-zA-Z][0-9]}, coordinates) do
+      zero_index_adjusted_column = coordinates |> String.trim |> String.last 
+                                     |> String.to_integer |> subtract(1)
+
+      row_character = coordinates |> String.first |> String.to_charlist |> List.first
+      row_offset = row_character |> offset_from_capital_a() |> times(board_size) 
+
+      zero_index_adjusted_column + row_offset
+    else
+      -1
+    end
+  end
+
+  defp subtract(number, other_number) do
+    number - other_number
+  end
+
+  defp times(number, other_number) do
+    number * other_number
+  end
+
+  defp offset_from_capital_a(character) do
+    character - @capital_a
+  end
 
   def ask_game_mode(input_device) do
     do_ask_game_mode(input_device, try_again: false)

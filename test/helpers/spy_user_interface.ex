@@ -19,8 +19,15 @@ defmodule SpyUserInterface do
     #but still being sent if the game results in a win scenario
   end
 
-  def announce_next_move(game = %Game{}) do
+  def announce_next_move(%Game{}) do
     send self, :spy_user_interface_received_announce_next_move_with_game
+  end
+
+  def ask_next_move(input_device, board_size, valid_input) do
+    send self, :spy_user_interface_received_ask_next_move
+    send self, input_device: input_device
+    send self, input_size: board_size
+    send self, input_valid_moves: valid_input
   end
 
 end

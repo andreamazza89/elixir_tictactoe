@@ -7,6 +7,11 @@ defmodule Board do
     %Board{board | cells: new_cells}
   end
 
+  def size(board = %Board{}) do
+    number_of_cells = length(board.cells)
+    :math.sqrt(number_of_cells) |> round
+  end
+
   def available_moves(%Board{cells: cells}) do
     cells |> Enum.with_index |> Enum.reduce([], &add_empty_cell_to_list/2) 
   end
