@@ -19,16 +19,18 @@ defmodule BoardTest do
   end
 
 
-  describe "empty board check" do
+  describe "board size" do
+    
+    test "defaults to size three" do
+      three_board = %Board{}
 
-    test "knows when it is empty" do
-      empty_board = create_board([x: [], o: []])
-      assert Board.empty?(empty_board) === true
+      assert Board.size(three_board) === 3
     end
 
-    test "knows when it is not empty" do
-      non_empty_board = create_board([x: [1], o: []])
-      assert Board.empty?(non_empty_board) === false
+    test "knows its size" do
+      two_board = %Board{cells: [:empty,:empty,:empty,:empty]}
+
+      assert Board.size(two_board) === 2
     end
 
   end
@@ -58,6 +60,16 @@ defmodule BoardTest do
 
   
   describe "checking the board status" do
+
+    test "knows when it is empty" do
+      empty_board = create_board([x: [], o: []])
+      assert Board.empty?(empty_board) === true
+    end
+
+    test "knows when it is not empty" do
+      non_empty_board = create_board([x: [1], o: []])
+      assert Board.empty?(non_empty_board) === false
+    end
 
     test "a board is incomplete when all cells are empty" do
       incomplete_board = %Board{}

@@ -12,16 +12,40 @@ defmodule GameTest do
   end
 
 
-  describe "retrieving board status" do
+  describe "game status" do
 
-    test "delegates to Board.status to find out the status of the game" do
-      game = %Game{}
+    test "reports a draw" do
+      draw_board = create_board([x: [1,2,6,7,9,], o: [3,4,5,8]])
+      game = %Game{board: draw_board}
     
-      Game.status(game, SpyBoard)
+      assert Game.status(game) === :draw
+    end
 
-      assert_receive :spy_board_received_status_call
+    test "reports a win, player one wins" do
+      draw_board = create_board([x: [1,2,3], o: [4,5]])
+      player_one = %Player.Human{mark: :x}
+      player_two = %Player.Human{mark: :o}
+      game = %Game{board: draw_board, players: {player_two, player_one}}
+    
+      assert Game.status(game) === {:win, player_one}
     end
   
+    test "reports a win, player two wins" do
+      draw_board = create_board([x: [1,2], o: [4,5,6]])
+      player_one = %Player.Human{mark: :x}
+      player_two = %Player.Human{mark: :o}
+      game = %Game{board: draw_board, players: {player_one, player_two}}
+    
+      assert Game.status(game) === {:win, player_two}
+    end
+
+    test "reports incomplete" do
+      incomplete_board = create_board([x: [1,2], o: [4,5]])
+      game = %Game{board: incomplete_board}
+
+      assert Game.status(game) === :incomplete
+    end
+
     test "knows if a move is available" do
       game = %Game{}
       assert Game.is_move_available?(game, 0) === true

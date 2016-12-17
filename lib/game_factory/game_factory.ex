@@ -1,15 +1,15 @@
 defmodule GameFactory do
 
-  def create_game([mode: mode, swap_order: swap?]) do
+  def create_game([mode: mode, swap_order: swap?], io \\ {UI.Console, :stdio}) do
 
     game = 
       case mode do
         :human_v_human -> 
-          %Game{players: {%Player.Human{mark: :x}, %Player.Human{mark: :o}}}
+          %Game{players: {%Player.Human{mark: :x, io: io}, %Player.Human{mark: :o, io: io}}}
         :human_v_linear_machine -> 
-          %Game{players: {%Player.Human{mark: :x}, %Player.LinearCpu{mark: :o}}}
+          %Game{players: {%Player.Human{mark: :x, io: io}, %Player.LinearCpu{mark: :o}}}
         :human_v_minimax_machine -> 
-          %Game{players: {%Player.Human{mark: :x}, %Player.MiniMax{mark: :o}}}
+          %Game{players: {%Player.Human{mark: :x, io: io}, %Player.MiniMax{mark: :o}}}
         :linear_machine_v_linear_machine -> 
           %Game{players: {%Player.LinearCpu{mark: :x}, %Player.LinearCpu{mark: :o}}}
         :linear_machine_v_minimax_machine -> 
