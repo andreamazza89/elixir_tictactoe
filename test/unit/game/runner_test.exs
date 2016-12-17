@@ -36,21 +36,21 @@ defmodule Game.RunnerTest do
     end
 
     test "delegates to the UI when the game results in a win, including the winner (one)" do
-      draw_board = create_board([x: [1,2,3], o: [4,5]])
-      draw_game = %Game{board: draw_board, players: {"player_two", "player_one"}} 
+      win_board = create_board([x: [1,2,3], o: [4,5]])
+      win_game = %Game{board: win_board, players: {"player_two", "player_one"}} 
       user_interface = SpyUserInterface
 
-      Game.Runner.game_loop(draw_game, user_interface)
+      Game.Runner.game_loop(win_game, user_interface)
   
       assert_receive :spy_user_interface_received_announce_win_with_player_one
     end
 
     test "delegates to the UI when the game results in a win, including the winner (two)" do
-      draw_board = create_board([x: [1,2], o: [4,5,6]])
-      draw_game = %Game{board: draw_board, players: {"player_one", "player_two"}} 
+      win_game = create_board([x: [1,2], o: [4,5,6]])
+      win_game = %Game{board: win_game, players: {"player_one", "player_two"}} 
       user_interface = SpyUserInterface
 
-      Game.Runner.game_loop(draw_game, user_interface)
+      Game.Runner.game_loop(win_game, user_interface)
   
       assert_receive :spy_user_interface_received_announce_win_with_player_two
     end
