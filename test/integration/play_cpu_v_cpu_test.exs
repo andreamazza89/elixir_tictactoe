@@ -3,9 +3,8 @@ defmodule ItegrationMachineVsMachineTest do
   import TestHelpers
 
   test "program exits at the end of a game" do
-    input_stream = create_input_stream("n\n")
-    game = GameFactory.create_game([mode: :linear_machine_v_linear_machine, swap_order: false]) 
-    play_game = fn() -> Game.Runner.play(game, input_stream) end 
+    input_stream = create_input_stream("3\ny\nn\n")
+    play_game = fn() -> Game.Runner.play(io: {UI.Console, input_stream}) end 
 
     assert catch_exit(play_game.()) === :game_over
   end

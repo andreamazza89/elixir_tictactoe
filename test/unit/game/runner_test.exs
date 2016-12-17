@@ -2,6 +2,23 @@ defmodule Game.RunnerTest do
   use ExUnit.Case, async: true
   import TestHelpers
 
+  describe "game setup" do
+
+    test "creates the game as requested by the UI example one" do
+      game_created = Game.Runner.setup_game(StubUserInterfaceWantsHumanVsHumanAndSwap, "double_input_device") 
+      expected_game = %Game{players: {%Player.Human{mark: :o}, %Player.Human{mark: :x}}}
+      assert game_created === expected_game
+    end
+
+    test "creates the game as requested by the UI example two" do
+      game_created = Game.Runner.setup_game(StubUserInterfaceWantsHumanVsLinearNoSwap, "double_input_device") 
+      expected_game = %Game{players: {%Player.Human{mark: :x}, %Player.LinearCpu{mark: :o}}}
+      assert game_created === expected_game
+    end
+
+  end
+
+
   describe "game loop" do
 
     test "delegates to the UI when the game results in a draw" do

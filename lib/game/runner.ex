@@ -13,14 +13,22 @@ defmodule Game.Runner do
     end
   end
 
-  def play(game, input_device) do
-    game_loop(game)
-    play_again_or_exit(game, input_device)
+  def setup_game(user_interface, input_device) do
+    mode = user_interface.ask_game_mode(input_device) 
+    swap_order? = user_interface.ask_swap_play_order(input_device) 
+    GameFactory.create_game([mode: mode, swap_order: swap_order?])
   end
 
-  defp play_again_or_exit(game, input_device) do
+  def play(io: {user_interface, input_device}) do
+    #game = setup_game(user_interface, input_device)
+    game = 3
+    game_loop(game)
+    play_again_or_exit(game, user_interface, input_device)
+  end
+
+  defp play_again_or_exit(game, user_interface, input_device) do
     if UI.Console.ask_play_again?(input_device) do
-      play(game, input_device)
+      play(io: {user_interface, input_device})
     else
       exit :game_over
     end
