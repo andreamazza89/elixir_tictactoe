@@ -22,38 +22,24 @@ defmodule GameTest do
     end
 
     test "reports a win, player one wins" do
-      draw_board = create_board([x: [1,2,3], o: [4,5]])
-      player_one = %Player.Human{mark: :x}
-      player_two = %Player.Human{mark: :o}
-      game = %Game{board: draw_board, players: {player_two, player_one}}
+      win_board = create_board([x: [1,2,3], o: [4,5]])
+      game = %Game{board: win_board, players: {"player_two_double", "player_one_double"}}
     
-      assert Game.status(game) === {:win, player_one}
+      assert Game.status(game) === {:win, "player_one_double"}
     end
   
     test "reports a win, player two wins" do
-      draw_board = create_board([x: [1,2], o: [4,5,6]])
-      player_one = %Player.Human{mark: :x}
-      player_two = %Player.Human{mark: :o}
-      game = %Game{board: draw_board, players: {player_one, player_two}}
+      win_board = create_board([x: [1,2], o: [4,5,6]])
+      game = %Game{board: win_board, players: {"player_one_double", "player_two_double"}}
     
-      assert Game.status(game) === {:win, player_two}
+      assert Game.status(game) === {:win, "player_two_double"}
     end
 
-    test "reports incomplete" do
+    test "reports an incomplete game" do
       incomplete_board = create_board([x: [1,2], o: [4,5]])
       game = %Game{board: incomplete_board}
 
       assert Game.status(game) === :incomplete
-    end
-
-    test "knows if a move is available" do
-      game = %Game{}
-      assert Game.is_move_available?(game, 0) === true
-    end
-
-    test "knows if a move is not available" do
-      game = %Game{board: create_board([x: [1], o: []])}
-      assert Game.is_move_available?(game, 0) === false
     end
 
   end
@@ -76,7 +62,7 @@ defmodule GameTest do
   
   describe "getting input from players" do
 
-    test "updates the game with the current player's move" do
+    test "updates the game with the current player's move, example one" do
       stub_player =  %StubPlayerReturnsCellZero{mark: :x}
       double_player = "double_player"
       game = %Game{players: {stub_player, double_player}}
@@ -84,6 +70,18 @@ defmodule GameTest do
       updated_game = Game.make_next_move(game)
 
       assert get_cell_at(0, updated_game) === :x
+    end
+
+    test "updates the game with the current player's move, example two" do
+      stub_player =  %StubPlayerReturnsCellZero{mark: :o}
+      double_player = "double_player"
+      board = create_board([x: [2], o: []])
+      game = %Game{players: {stub_player, double_player}, board: board}
+
+      updated_game = Game.make_next_move(game)
+
+      assert get_cell_at(1, updated_game) === :x
+      assert get_cell_at(0, updated_game) === :o
     end
 
   end
