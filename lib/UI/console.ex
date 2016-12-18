@@ -14,7 +14,7 @@ C g | h | i "
   def ask_next_move(input_device, board_size, valid_input) do
     fetch_input = fn() -> 
                     raw_move = ask_for_raw_move(input_device)  
-                    parsed_move = parse_cartesian_coordinates(raw_move, board_size) 
+                    parse_cartesian_coordinates(raw_move, board_size) 
                   end 
     error_message = "Invalid move: please try again."
     validate_input(fetch_input, valid_input, error_message)
