@@ -2,7 +2,7 @@ defmodule UI.Console do
 
   @capital_a 65
 
-  @visual_board_template "
+  @visual_board_template_size_three "
   1 | 2 | 3 
   ----------
 A a | b | c 
@@ -10,6 +10,77 @@ A a | b | c
 B d | e | f 
   ----------
 C g | h | i "  
+
+  @visual_board_template_size_four "
+  1 | 2 | 3 | 4 
+  ------------- 
+A a | b | c | d 
+  ------------- 
+B e | f | g | h 
+  ------------- 
+C i | j | k | l 
+  ------------- 
+D m | n | O | p "
+
+  def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
+    String.replace(@visual_board_template_size_three, "a", mark_to_string[a]) 
+      |> String.replace("b", mark_to_string[b]) 
+      |> String.replace("c", mark_to_string[c]) 
+      |> String.replace("d", mark_to_string[d]) 
+      |> String.replace("e", mark_to_string[e]) 
+      |> String.replace("f", mark_to_string[f]) 
+      |> String.replace("g", mark_to_string[g]) 
+      |> String.replace("h", mark_to_string[h]) 
+      |> String.replace("i", mark_to_string[i]) 
+  end
+
+  def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p]}, mark_to_string) do
+    String.replace(@visual_board_template_size_four, "a", mark_to_string[a]) 
+      |> String.replace("b", mark_to_string[b]) 
+      |> String.replace("c", mark_to_string[c]) 
+      |> String.replace("d", mark_to_string[d]) 
+      |> String.replace("e", mark_to_string[e]) 
+      |> String.replace("f", mark_to_string[f]) 
+      |> String.replace("g", mark_to_string[g]) 
+      |> String.replace("h", mark_to_string[h]) 
+      |> String.replace("i", mark_to_string[i]) 
+      |> String.replace("j", mark_to_string[j]) 
+      |> String.replace("k", mark_to_string[k]) 
+      |> String.replace("l", mark_to_string[l]) 
+      |> String.replace("m", mark_to_string[m]) 
+      |> String.replace("n", mark_to_string[n]) 
+      |> String.replace("O", mark_to_string[o]) 
+      |> String.replace("p", mark_to_string[p]) 
+  end
+
+  #def render_board(board = %Board{}, mark_to_string) do
+  #  generate_header(board) <> generate_rows(board, mark_to_string)
+  #end
+
+  #defp generate_header(board) do
+  #  board_size = Board.size(board)
+  #  "  " <>   
+  #  ((1..board_size) |> Enum.map(&number_to_column_header/1) |> Enum.join())
+  #    |> String.replace(~r{\|$}, "\n")
+  #end
+
+  #defp number_to_column_header(number) do
+  #  " " <> Integer.to_string(number) <> " |"
+  #end
+
+  #defp generate_rows(board, mark_to_string) do
+  #  board_size = Board.size(board)
+  #  (1..board_size) |> Enum.map() |> Enum.join() |> String.trim
+  #  "" 
+  #end
+
+  #defp number_to_row(number, mark_to_string, board) do
+  #  " " <> Integer.to_string(number) <> " |"
+  #end
+
+  #defp row_letter (offset_from_A) do
+  #   
+  #end
 
   def ask_next_move(input_device, board_size, valid_input) do
     fetch_input = fn() -> 
@@ -94,18 +165,6 @@ C g | h | i "
     end
   end
 
-  def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
-    String.replace(@visual_board_template, "a", mark_to_string[a]) 
-      |> String.replace("b", mark_to_string[b]) 
-      |> String.replace("c", mark_to_string[c]) 
-      |> String.replace("d", mark_to_string[d]) 
-      |> String.replace("e", mark_to_string[e]) 
-      |> String.replace("f", mark_to_string[f]) 
-      |> String.replace("g", mark_to_string[g]) 
-      |> String.replace("h", mark_to_string[h]) 
-      |> String.replace("i", mark_to_string[i]) 
-  end
-
   def announce_winner(winner) do
     winners_mark = winner.mark
     clear_and_print "The winner was: " <> Atom.to_string(winners_mark)
@@ -119,7 +178,7 @@ C g | h | i "
     current_player = Game.get_current_player(game)
     clear_and_print "It is " <> Atom.to_string(current_player.mark) <> 
                     "'s turn, please pick a move:" <>
-                    render_board(game.board, [empty: " ", x: "x", o: "o"] )
+                    render_board(game.board, %{empty: " ", x: "x", o: "o"} )
   end
 
   defp announce_game_mode_selection(try_again: try_again?) do

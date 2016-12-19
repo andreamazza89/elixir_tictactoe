@@ -69,14 +69,6 @@ defmodule Board do
     do_get_columns(remaining_cells, columns ++ [this_column], current_column - 1)
   end
 
-###################################################################################
-###################################################################################
-###################################################################################
-###################################################################################
-  defp get_diagonals([a,_b,c,_d,e,_f,g,_h,i]) do
-    [[a,e,i],[g,e,c]]
-  end
-
    defp get_diagonals(cells) do
     board_size = size(%Board{cells: cells})
     rows = get_rows(cells) 
@@ -86,15 +78,14 @@ defmodule Board do
     [downwards, upwards]
   end
 
-  def do_get_diagonals(_rows, diagonal, 0) do
+  defp do_get_diagonals(_rows, diagonal, 0) do
     diagonal
   end
 
-  def do_get_diagonals(rows, diagonal, current_column) do
+  defp do_get_diagonals(rows, diagonal, current_column) do
     zero_adjusted_column = current_column - 1
     cell_to_add = rows |> Enum.at(zero_adjusted_column) |> Enum.at(zero_adjusted_column)
     do_get_diagonals(rows, diagonal ++ [cell_to_add], current_column - 1 )
   end
-
 
 end
