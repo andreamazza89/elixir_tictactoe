@@ -132,5 +132,21 @@ B o | x | x
 C x | o | x "
     end
 
+@tag :wip
+    test "renders a four-sized board into a string" do
+      draw_board = create_board([size: 4, x: [1,2,3,4,5,6,7,8], o: [9,10,11,12,13,14,15,16]])
+      visual_marks_representation = %{empty: " ", x: "x", o: "o"}
+      assert UI.Console.render_board(draw_board, visual_marks_representation) === "
+  1 | 2 | 3 | 4 
+  ------------- 
+A x | x | x | x 
+  ------------- 
+B x | x | x | x 
+  ------------- 
+C o | o | o | o 
+  ------------- 
+D o | o | o | o "
+    end
+
   end
 end
