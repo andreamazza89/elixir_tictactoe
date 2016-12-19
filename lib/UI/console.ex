@@ -1,6 +1,8 @@
 defmodule UI.Console do
 
   @capital_a 65
+  @line_ends_with_pipe_regex ~r{\|$}
+
 
   @visual_board_template_size_three "
   1 | 2 | 3 
@@ -22,65 +24,57 @@ C i | j | k | l
   ------------- 
 D m | n | O | p "
 
-  def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i]}, mark_to_string) do
-    String.replace(@visual_board_template_size_three, "a", mark_to_string[a]) 
-      |> String.replace("b", mark_to_string[b]) 
-      |> String.replace("c", mark_to_string[c]) 
-      |> String.replace("d", mark_to_string[d]) 
-      |> String.replace("e", mark_to_string[e]) 
-      |> String.replace("f", mark_to_string[f]) 
-      |> String.replace("g", mark_to_string[g]) 
-      |> String.replace("h", mark_to_string[h]) 
-      |> String.replace("i", mark_to_string[i]) 
+  def render_board(board = %Board{}, mark_to_string) do
+    generate_header(board) <> generate_rows(board, mark_to_string)
   end
 
-  def render_board(%Board{cells: [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p]}, mark_to_string) do
-    String.replace(@visual_board_template_size_four, "a", mark_to_string[a]) 
-      |> String.replace("b", mark_to_string[b]) 
-      |> String.replace("c", mark_to_string[c]) 
-      |> String.replace("d", mark_to_string[d]) 
-      |> String.replace("e", mark_to_string[e]) 
-      |> String.replace("f", mark_to_string[f]) 
-      |> String.replace("g", mark_to_string[g]) 
-      |> String.replace("h", mark_to_string[h]) 
-      |> String.replace("i", mark_to_string[i]) 
-      |> String.replace("j", mark_to_string[j]) 
-      |> String.replace("k", mark_to_string[k]) 
-      |> String.replace("l", mark_to_string[l]) 
-      |> String.replace("m", mark_to_string[m]) 
-      |> String.replace("n", mark_to_string[n]) 
-      |> String.replace("O", mark_to_string[o]) 
-      |> String.replace("p", mark_to_string[p]) 
+  defp generate_header(board) do
+    board_size = Board.size(board)
+    "\n " <>   
+    ((1..board_size) |> Enum.map(&number_to_column_header/1) |> Enum.join())
+      |> String.replace(@line_ends_with_pipe_regex, "\n")
   end
 
-  #def render_board(board = %Board{}, mark_to_string) do
-  #  generate_header(board) <> generate_rows(board, mark_to_string)
-  #end
+  defp generate_rows(board, mark_to_string) do
+    board_size = Board.size(board)
+    (0..(board_size - 1)) 
+      |> Enum.map(fn(row_number) -> row_number_to_string_row(row_number, mark_to_string, board) end) 
+      |> Enum.join() 
+      |> String.slice(0..-2)
+  end
 
-  #defp generate_header(board) do
-  #  board_size = Board.size(board)
-  #  "  " <>   
-  #  ((1..board_size) |> Enum.map(&number_to_column_header/1) |> Enum.join())
-  #    |> String.replace(~r{\|$}, "\n")
-  #end
+  defp number_to_column_header(number) do
+    " " <> Integer.to_string(number) <> " |"
+  end
 
-  #defp number_to_column_header(number) do
-  #  " " <> Integer.to_string(number) <> " |"
-  #end
+  defp row_number_to_string_row(row_number, mark_to_string, board) do
+    board_size = Board.size(board)
+    row_spacer(board_size) <> 
+    row_letter(row_number) <> 
+    render_row_cells(row_number, mark_to_string, board)
+  end
 
-  #defp generate_rows(board, mark_to_string) do
-  #  board_size = Board.size(board)
-  #  (1..board_size) |> Enum.map() |> Enum.join() |> String.trim
-  #  "" 
-  #end
+  defp row_spacer(board_size) do
+    "  ---" <> String.duplicate("----", board_size - 2) <> "---\n"
+  end
 
-  #defp number_to_row(number, mark_to_string, board) do
-  #  " " <> Integer.to_string(number) <> " |"
-  #end
+  defp row_letter (offset_from_A) do
+    <<(@capital_a + offset_from_A)>>
+  end
+  
+  defp render_row_cells(row, mark_to_string, board) do
+    board_size = Board.size(board)
+    ((0..(board_size - 1)) 
+      |> Enum.map(fn(column) -> render_cell(row, column, board, mark_to_string) end)
+      |> Enum.join()) |> String.replace(@line_ends_with_pipe_regex, "\n")
+      
+  end
 
-  #defp row_letter (offset_from_A) do
-  #   
-  #end
+  defp render_cell(row, column, board, mark_to_string) do
+    cell_id = (Board.size(board) * row) + column 
+    cell_mark = Enum.at(board.cells, cell_id) 
+    " " <> mark_to_string[cell_mark] <> " |"
+  end
 
   def ask_next_move(input_device, board_size, valid_input) do
     fetch_input = fn() -> 
@@ -89,6 +83,22 @@ D m | n | O | p "
                   end 
     error_message = "Invalid move: please try again."
     validate_input(fetch_input, valid_input, error_message)
+  end
+
+  def ask_board_size(input_device, valid_input) do
+    fetch_input = fn() -> 
+                    IO.gets(input_device, "\n") |> String.trim() |> string_to_integer_or_nil()
+                  end 
+    error_message = "Invalid size: please try again. Only 3 or 4 are available"
+    validate_input(fetch_input, valid_input, error_message)
+  end
+
+  defp string_to_integer_or_nil(string) do
+    if Regex.match?(~r{^\d+$}, string) do
+      String.to_integer(string)
+    else
+      nil
+    end
   end
 
   defp validate_input(fetch_input, valid_input, error_message) do
