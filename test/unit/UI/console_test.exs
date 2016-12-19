@@ -137,13 +137,13 @@ C x | o | x "
       visual_marks_representation = %{empty: " ", x: "x", o: "o"}
       assert UI.Console.render_board(draw_board, visual_marks_representation) === "
   1 | 2 | 3 | 4 
-  ------------- 
+  --------------
 A x | x | x | x 
-  ------------- 
+  --------------
 B x | x | x | x 
-  ------------- 
+  --------------
 C o | o | o | o 
-  ------------- 
+  --------------
 D o | o | o | o "
     end
 

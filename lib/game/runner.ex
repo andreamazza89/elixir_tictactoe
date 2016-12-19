@@ -1,5 +1,7 @@
 defmodule Game.Runner do
 
+  @available_board_sizes [3,4]
+
   def play(io: {user_interface, input_device}) do
     game = setup_game(user_interface, input_device)
     game_loop(game)
@@ -8,8 +10,9 @@ defmodule Game.Runner do
 
   def setup_game(user_interface, input_device) do
     mode = user_interface.ask_game_mode(input_device) 
+    board_size = user_interface.ask_board_size(input_device, @available_board_sizes) 
     swap_order? = user_interface.ask_swap_play_order(input_device) 
-    GameFactory.create_game([mode: mode, swap_order: swap_order?], {user_interface, input_device})
+    GameFactory.create_game([board_size: board_size, mode: mode, swap_order: swap_order?], {user_interface, input_device})
   end
 
   def game_loop(game, user_interface \\ UI.Console) do

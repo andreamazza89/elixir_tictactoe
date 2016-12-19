@@ -1,7 +1,65 @@
 defmodule UI.ConsoleInputTest do
   use ExUnit.Case
   import TestHelpers
+  import PromptRegexes
   import ExUnit.CaptureIO
+
+  describe "asking board size for a new game" do
+
+    test "fetches and parses the selected board size (example one)" do
+      user_input = create_input_stream("3\n")
+      valid_input = [3, 4]
+
+      assert UI.Console.ask_board_size(user_input, valid_input) === 3
+    end
+
+    test "fetches and parses the selected board size (example two)" do
+      user_input = create_input_stream("4\n")
+      valid_input = [3, 4]
+
+      assert UI.Console.ask_board_size(user_input, valid_input) === 4
+    end
+
+    test "keeps asking the user if the input is invalid (bad format)" do
+      user_input = create_input_stream("a\n3\n")
+      valid_input = [3, 4]
+
+      assert UI.Console.ask_board_size(user_input, valid_input) === 3
+    end
+
+    test "keeps asking the user if the input is invalid (size unavailable)" do
+      user_input = create_input_stream("5\n3\n")
+      valid_input = [3, 4]
+
+      assert UI.Console.ask_board_size(user_input, valid_input) === 3
+    end
+
+    test "shows the error message when the user enters invalid input" do
+      user_input = create_input_stream("5\n3\n")
+      valid_input = [3, 4]
+      action = fn() -> UI.Console.ask_board_size(user_input, valid_input) end
+
+      assert Regex.match?(~r{Invalid size: please try again. Only 3 or 4 are available}, capture_io(action)) 
+    end
+
+    test "clears the screen before prompting the user" do
+      user_input = create_input_stream("3\n")
+      valid_input = [3, 4]
+      action = fn() -> UI.Console.ask_board_size(user_input, valid_input) end
+
+      assert_console_output_matches(clear_screen_regex, action)
+    end
+
+    test "promts the user with the appropriate question" do
+      user_input = create_input_stream("3\n")
+      valid_input = [3, 4]
+      action = fn() -> UI.Console.ask_board_size(user_input, valid_input) end
+
+      assert_console_output_matches(ask_board_size_regex, action)
+    end
+
+  end
+
 
   describe "fetching next move" do
 

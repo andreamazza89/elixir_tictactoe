@@ -3,27 +3,6 @@ defmodule UI.Console do
   @capital_a 65
   @line_ends_with_pipe_regex ~r{\|$}
 
-
-  @visual_board_template_size_three "
-  1 | 2 | 3 
-  ----------
-A a | b | c 
-  ----------
-B d | e | f 
-  ----------
-C g | h | i "  
-
-  @visual_board_template_size_four "
-  1 | 2 | 3 | 4 
-  ------------- 
-A a | b | c | d 
-  ------------- 
-B e | f | g | h 
-  ------------- 
-C i | j | k | l 
-  ------------- 
-D m | n | O | p "
-
   def render_board(board = %Board{}, mark_to_string) do
     generate_header(board) <> generate_rows(board, mark_to_string)
   end
@@ -86,11 +65,16 @@ D m | n | O | p "
   end
 
   def ask_board_size(input_device, valid_input) do
+    announce_board_size_selection()
     fetch_input = fn() -> 
                     IO.gets(input_device, "\n") |> String.trim() |> string_to_integer_or_nil()
                   end 
     error_message = "Invalid size: please try again. Only 3 or 4 are available"
     validate_input(fetch_input, valid_input, error_message)
+  end
+
+  defp announce_board_size_selection do
+    clear_and_print("What size board would you like to play with?")
   end
 
   defp string_to_integer_or_nil(string) do

@@ -20,6 +20,14 @@ defmodule Game.RunnerTest do
       assert game_created === expected_game
     end
 
+    test "creates the game as requested by the UI example three" do
+      game_created = Game.Runner.setup_game(StubUserInterfaceWantsBoardSizeFour, "double_input_device") 
+      player_one = %Player.LinearCpu{mark: :x}      
+      player_two = %Player.LinearCpu{mark: :o}
+      expected_game = %Game{board: create_board([size: 4, x: [], o: []]), players: {player_one, player_two}}
+      assert game_created === expected_game
+    end
+
   end
 
 

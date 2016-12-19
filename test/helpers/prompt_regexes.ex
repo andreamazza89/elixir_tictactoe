@@ -21,6 +21,10 @@ defmodule PromptRegexes do
   end
   
   def play_again_regex do
-    ~r{Would you like to play again?}
+    ~r{Would you like to play again\?}
+  end
+
+  def ask_board_size_regex do
+    ~r{What size board would you like to play with?}
   end
 end

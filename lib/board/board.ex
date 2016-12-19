@@ -1,6 +1,12 @@
 defmodule Board do
   defstruct cells: [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
 
+  def create_board(size) do
+    largest_index = (size * size) - 1
+    cells = Enum.map((0..largest_index), fn(_) -> :empty end)
+    %Board{cells: cells}
+  end
+
   def add_move(board = %Board{}, {cell_index, players_mark}) do
     old_cells = board.cells
     new_cells = List.replace_at(old_cells, cell_index, players_mark)
