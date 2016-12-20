@@ -1,6 +1,6 @@
 defmodule StubUserInterfaceWantsHumanVsHumanAndSwap do
 
-  def ask_game_mode(_input_device) do
+  def ask_game_mode(_input_device, _valid_input) do
     :human_v_human
   end
 
@@ -15,7 +15,7 @@ end
 
 defmodule StubUserInterfaceWantsHumanVsLinearNoSwap do
 
-  def ask_game_mode(_input_device) do
+  def ask_game_mode(_input_device, _valid_input) do
     :human_v_linear_machine
   end
 
@@ -30,7 +30,7 @@ end
 
 defmodule StubUserInterfaceWantsBoardSizeFour do
 
-  def ask_game_mode(_input_device) do
+  def ask_game_mode(_input_device, _valid_input) do
     :linear_machine_v_linear_machine
   end
 

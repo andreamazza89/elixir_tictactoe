@@ -27,4 +27,20 @@ defmodule PromptRegexes do
   def ask_board_size_regex do
     ~r{What size board would you like to play with?}
   end
+
+  def invalid_mode_selected_regex do
+    ~r{Invalid mode: please try again. Only 1-6 are available}
+  end
+
+  def game_mode_prompt_regex do
+    ~r"""
+    Please select a game mode \(enter mode number\): 
+      1 - human vs human
+      2 - human vs dumb machine
+      3 - dumb machine vs dumb machine
+      4 - human vs clever machine
+      5 - dumb machine vs clever machine
+      6 - clever machine vs clever machine
+    """ 
+  end
 end

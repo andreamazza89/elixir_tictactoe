@@ -125,22 +125,34 @@ defmodule UI.Console do
     character - @capital_a
   end
 
-  def ask_game_mode(input_device) do
-    do_ask_game_mode(input_device, try_again: false)
+  def ask_game_mode(input_device, valid_input) do
+    announce_game_mode_selection()
+    fetch_input = fn() -> 
+                    IO.gets(input_device, "\n") |> String.trim() |> game_mode_map()
+                  end 
+    error_message = "Invalid mode: please try again. Only 1-6 are available"
+    validate_input(fetch_input, valid_input, error_message)
   end
 
-  defp do_ask_game_mode(input_device, try_again: try_again?) do
-    announce_game_mode_selection(try_again: try_again?)
-    selected_game_mode = IO.gets(input_device, "\n") |> String.trim
+  defp announce_game_mode_selection do
+    clear_and_print "Please select a game mode (enter mode number): \n" <>
+                    "  1 - human vs human\n" <>
+                    "  2 - human vs dumb machine\n" <>
+                    "  3 - dumb machine vs dumb machine\n" <>
+                    "  4 - human vs clever machine\n" <>
+                    "  5 - dumb machine vs clever machine\n" <>
+                    "  6 - clever machine vs clever machine\n"
+  end
 
-    case selected_game_mode do
+  defp game_mode_map(selection) do
+    case selection do
       "1" -> :human_v_human
       "2" -> :human_v_linear_machine
       "3" -> :linear_machine_v_linear_machine
       "4" -> :human_v_minimax_machine
       "5" -> :linear_machine_v_minimax_machine
       "6" -> :minimax_machine_v_minimax_machine
-       _  -> do_ask_game_mode(input_device, try_again: true)
+       _  -> :invalid_game_mode
     end
   end
 
@@ -173,21 +185,6 @@ defmodule UI.Console do
     clear_and_print "It is " <> Atom.to_string(current_player.mark) <> 
                     "'s turn, please pick a move:" <>
                     render_board(game.board, %{empty: " ", x: "x", o: "o"} )
-  end
-
-  defp announce_game_mode_selection(try_again: try_again?) do
-    clear_and_print (if try_again? do 
-                      "Invalid selection, please try again\n"
-                     else
-                      ""
-                     end) <>
-                    "Please select a game mode (enter mode number): \n" <>
-                    "  1 - human vs human\n" <>
-                    "  2 - human vs dumb machine\n" <>
-                    "  3 - dumb machine vs dumb machine\n" <>
-                    "  4 - human vs clever machine\n" <>
-                    "  5 - dumb machine vs clever machine\n" <>
-                    "  6 - clever machine vs clever machine\n"
   end
 
   defp announce_swap_order_selection do

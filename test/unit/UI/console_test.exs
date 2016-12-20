@@ -1,28 +1,74 @@
 defmodule UI.ConsoleTest do
   use ExUnit.Case
   import TestHelpers
+  import ExUnit.CaptureIO
   import PromptRegexes
 
   describe "asking the user for game options" do
 
-    test "parses user-selected game mode, human v human" do
-      user = create_input_stream("1\n")
-      assert UI.Console.ask_game_mode(user) === :human_v_human
+    test "fetches and parses user-selected game mode, human v human" do
+      user_input = create_input_stream("1\n")
+      valid_input = [:human_v_human]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :human_v_human
     end
 
     test "parses user-selected game mode, human v linear machine" do
-      user = create_input_stream("2\n")
-      assert UI.Console.ask_game_mode(user) === :human_v_linear_machine
+     user_input = create_input_stream("2\n")
+      valid_input = [:human_v_linear_machine]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :human_v_linear_machine
     end
 
-    test "parses user-selected game mode, linear machine v linear machine" do
-      user = create_input_stream("3\n")
-      assert UI.Console.ask_game_mode(user) === :linear_machine_v_linear_machine
+    test "parses user-selected game mode, linear v linear machine" do
+     user_input = create_input_stream("3\n")
+      valid_input = [:linear_machine_v_linear_machine]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :linear_machine_v_linear_machine
+    end
+
+    test "parses user-selected game mode, human v minimax machine" do
+     user_input = create_input_stream("4\n")
+      valid_input = [:human_v_minimax_machine]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :human_v_minimax_machine
+    end
+
+    test "parses user-selected game mode, linear v minimax machine" do
+     user_input = create_input_stream("5\n")
+      valid_input = [:linear_machine_v_minimax_machine]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :linear_machine_v_minimax_machine
+    end
+
+    test "parses user-selected game mode, minimax v minimax machine" do
+      user_input = create_input_stream("6\n")
+      valid_input = [:minimax_machine_v_minimax_machine]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :minimax_machine_v_minimax_machine
     end
 
     test "keeps asking until an available mode is selected" do
-      user = create_input_stream("9\ns\n!\n1\n")
-      assert UI.Console.ask_game_mode(user) === :human_v_human
+      user_input = create_input_stream("9\ns\n!\n1\n")
+      valid_input = [:human_v_human]
+
+      assert UI.Console.ask_game_mode(user_input, valid_input) === :human_v_human
+    end
+
+    test "announces game mode selection" do
+      user_input = create_input_stream("1\n")
+      valid_input = [:human_v_human]
+      action = fn() -> UI.Console.ask_game_mode(user_input, valid_input) end
+
+      assert_console_output_matches(game_mode_prompt_regex, action)
+    end
+
+    test "shows the error message for game mode when the user enters invalid input" do
+      user_input = create_input_stream("ciao\n1\n")
+      valid_input = [:human_v_human]
+      action = fn() -> UI.Console.ask_game_mode(user_input, valid_input) end
+
+      assert_console_output_matches(invalid_mode_selected_regex, action)
     end
 
     test "parses user-selected swap choice, user wants swap (y)" do
