@@ -3,24 +3,26 @@ defmodule Player.MiniMax do
 
   defimpl Player, for: Player.MiniMax do
 
+  @initial_board_depth 0
+  @top_left_cell 0
+
     def get_next_move(player, game) do
       available_moves = Board.available_moves(game.board)
       if Board.empty?(game.board) do
-        0
+        @top_left_cell 
       else
-        rate_move_outcome_for_this_game = rate_move_outcome(game, player.mark, 0)
-        Enum.max_by(available_moves, rate_move_outcome_for_this_game) 
+        Enum.max_by(available_moves, fn(move) -> 
+          rate_move_outcome(move, game, player.mark, @initial_board_depth) 
+        end) 
       end
     end
 
-    defp rate_move_outcome(game, maximising_players_mark, depth) do
-      fn(move) ->
-        next_game_state = Game.mark_cell_for_current_player(game, move) 
-        if game_over?(next_game_state) do
-          rate_game_outcome(next_game_state, maximising_players_mark, depth)
-        else
-          rate_intermediate_board_value(next_game_state, maximising_players_mark, depth)
-        end
+    defp rate_move_outcome(move, game, maximising_players_mark, depth) do
+      next_game_state = Game.mark_cell_for_current_player(game, move) 
+      if game_over?(next_game_state) do
+        rate_game_outcome(next_game_state, maximising_players_mark, depth)
+      else
+        rate_intermediate_board_value(next_game_state, maximising_players_mark, depth)
       end
     end
 
@@ -56,8 +58,9 @@ defmodule Player.MiniMax do
 
     defp min_max_ratings_for_available_moves(game, maximising_players_mark, depth) do
       available_moves = Board.available_moves(game.board)
-      rate_move_outcome_for_this_game = rate_move_outcome(game, maximising_players_mark, depth + 1)
-      rated_moves = Enum.map(available_moves, rate_move_outcome_for_this_game)
+      rated_moves = Enum.map(available_moves, fn(move) -> 
+        rate_move_outcome(move, game, maximising_players_mark, depth + 1) 
+      end)
       Enum.min_max(rated_moves)
     end
 
