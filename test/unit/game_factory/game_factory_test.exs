@@ -81,7 +81,7 @@ defmodule UI.GameFactoryTest do
 
   test "creates a game with a custom-sized board" do
     game = GameFactory.create_game([board_size: 4, mode: :human_v_linear_machine, swap_order: true])
-    assert Board.size(game.board) === 4
+    assert Board.width(game.board) === 4
   end
 
 end

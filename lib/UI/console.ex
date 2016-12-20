@@ -8,15 +8,15 @@ defmodule UI.Console do
   end
 
   defp generate_header(board) do
-    board_size = Board.size(board)
+    board_width = Board.width(board)
     "\n " <>   
-    ((1..board_size) |> Enum.map(&number_to_column_header/1) |> Enum.join())
+    ((1..board_width) |> Enum.map(&number_to_column_header/1) |> Enum.join())
       |> String.replace(@line_ends_with_pipe_regex, "\n")
   end
 
   defp generate_rows(board, mark_to_string) do
-    board_size = Board.size(board)
-    (0..(board_size - 1)) 
+    board_width = Board.width(board)
+    (0..(board_width - 1)) 
       |> Enum.map(fn(row_number) -> row_number_to_string_row(row_number, mark_to_string, board) end) 
       |> Enum.join() 
       |> String.slice(0..-2)
@@ -27,14 +27,14 @@ defmodule UI.Console do
   end
 
   defp row_number_to_string_row(row_number, mark_to_string, board) do
-    board_size = Board.size(board)
-    row_spacer(board_size) <> 
+    board_width = Board.width(board)
+    row_spacer(board_width) <> 
     row_letter(row_number) <> 
     render_row_cells(row_number, mark_to_string, board)
   end
 
-  defp row_spacer(board_size) do
-    "  ---" <> String.duplicate("----", board_size - 2) <> "---\n"
+  defp row_spacer(board_width) do
+    "  ---" <> String.duplicate("----", board_width - 2) <> "---\n"
   end
 
   defp row_letter (offset_from_A) do
@@ -42,23 +42,23 @@ defmodule UI.Console do
   end
   
   defp render_row_cells(row, mark_to_string, board) do
-    board_size = Board.size(board)
-    ((0..(board_size - 1)) 
+    board_width = Board.width(board)
+    ((0..(board_width - 1)) 
       |> Enum.map(fn(column) -> render_cell(row, column, board, mark_to_string) end)
       |> Enum.join()) |> String.replace(@line_ends_with_pipe_regex, "\n")
       
   end
 
   defp render_cell(row, column, board, mark_to_string) do
-    cell_id = (Board.size(board) * row) + column 
+    cell_id = (Board.width(board) * row) + column 
     cell_mark = Enum.at(board.cells, cell_id) 
     " " <> mark_to_string[cell_mark] <> " |"
   end
 
-  def ask_next_move(input_device, board_size, valid_input) do
+  def ask_next_move(input_device, board_width, valid_input) do
     fetch_input = fn() -> 
                     raw_move = ask_for_raw_move(input_device)  
-                    parse_cartesian_coordinates(raw_move, board_size) 
+                    parse_cartesian_coordinates(raw_move, board_width) 
                   end 
     error_message = "Invalid move: please try again."
     validate_input(fetch_input, valid_input, error_message)
@@ -99,13 +99,13 @@ defmodule UI.Console do
     IO.gets(input_device, "\n")
   end
 
-  defp parse_cartesian_coordinates(coordinates, board_size) do
+  defp parse_cartesian_coordinates(coordinates, board_width) do
     if Regex.match?(~r{[a-zA-Z][0-9]}, coordinates) do
       zero_index_adjusted_column = coordinates |> String.trim |> String.last 
                                      |> String.to_integer |> subtract(1)
 
       row_character = coordinates |> String.first |> String.to_charlist |> List.first
-      row_offset = row_character |> offset_from_capital_a() |> times(board_size) 
+      row_offset = row_character |> offset_from_capital_a() |> times(board_width) 
 
       zero_index_adjusted_column + row_offset
     else

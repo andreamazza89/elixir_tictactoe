@@ -37,13 +37,13 @@ defmodule BoardTest do
     test "defaults to size three" do
       three_board = %Board{}
 
-      assert Board.size(three_board) === 3
+      assert Board.width(three_board) === 3
     end
 
     test "knows its size" do
       two_board = %Board{cells: [:empty,:empty,:empty,:empty]}
 
-      assert Board.size(two_board) === 2
+      assert Board.width(two_board) === 2
     end
 
   end

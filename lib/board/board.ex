@@ -13,7 +13,7 @@ defmodule Board do
     %Board{board | cells: new_cells}
   end
 
-  def size(board = %Board{}) do
+  def width(board = %Board{}) do
     number_of_cells = length(board.cells)
     :math.sqrt(number_of_cells) |> round
   end
@@ -56,13 +56,13 @@ defmodule Board do
   end
 
   defp get_rows(cells) do
-    board_size = size(%Board{cells: cells})
-    Enum.chunk(cells, board_size)
+    board_width = width(%Board{cells: cells})
+    Enum.chunk(cells, board_width)
   end
 
   defp get_columns(cells) do
-    board_size = size(%Board{cells: cells})
-    do_get_columns(cells, [], board_size)
+    board_width = width(%Board{cells: cells})
+    do_get_columns(cells, [], board_width)
   end
 
   defp do_get_columns([], columns, 0) do
@@ -76,11 +76,11 @@ defmodule Board do
   end
 
    defp get_diagonals(cells) do
-    board_size = size(%Board{cells: cells})
+    board_width = width(%Board{cells: cells})
     rows = get_rows(cells) 
     reverse_rows = Enum.reverse(rows)
-    downwards = do_get_diagonals(rows, [], board_size)
-    upwards = do_get_diagonals(reverse_rows, [], board_size)
+    downwards = do_get_diagonals(rows, [], board_width)
+    upwards = do_get_diagonals(reverse_rows, [], board_width)
     [downwards, upwards]
   end
 
