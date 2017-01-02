@@ -9,16 +9,16 @@ defmodule UI.Console do
 
   defp generate_header(board) do
     board_width = Board.width(board)
-    "\n " <>   
+    "\n " <>
     ((1..board_width) |> Enum.map(&number_to_column_header/1) |> Enum.join())
       |> String.replace(@line_ends_with_pipe_regex, "\n")
   end
 
   defp generate_rows(board, mark_to_string) do
     board_width = Board.width(board)
-    (0..(board_width - 1)) 
-      |> Enum.map(fn(row_number) -> row_number_to_string_row(row_number, mark_to_string, board) end) 
-      |> Enum.join() 
+    (0..(board_width - 1))
+      |> Enum.map(fn(row_number) -> row_number_to_string_row(row_number, mark_to_string, board) end)
+      |> Enum.join()
       |> String.slice(0..-2)
   end
 
@@ -28,8 +28,8 @@ defmodule UI.Console do
 
   defp row_number_to_string_row(row_number, mark_to_string, board) do
     board_width = Board.width(board)
-    row_spacer(board_width) <> 
-    row_letter(row_number) <> 
+    row_spacer(board_width) <>
+    row_letter(row_number) <>
     render_row_cells(row_number, mark_to_string, board)
   end
 
@@ -40,35 +40,34 @@ defmodule UI.Console do
   defp row_letter (offset_from_A) do
     <<(@capital_a + offset_from_A)>>
   end
-  
+
   defp render_row_cells(row, mark_to_string, board) do
     board_width = Board.width(board)
-    ((0..(board_width - 1)) 
+    ((0..(board_width - 1))
       |> Enum.map(fn(column) -> render_cell(row, column, board, mark_to_string) end)
       |> Enum.join()) |> String.replace(@line_ends_with_pipe_regex, "\n")
-      
   end
 
   defp render_cell(row, column, board, mark_to_string) do
-    cell_id = (Board.width(board) * row) + column 
-    cell_mark = Enum.at(board.cells, cell_id) 
+    cell_id = (Board.width(board) * row) + column
+    cell_mark = Enum.at(board.cells, cell_id)
     " " <> mark_to_string[cell_mark] <> " |"
   end
 
   def ask_next_move(input_device, board_width, valid_input) do
-    fetch_input = fn() -> 
-                    raw_move = ask_for_raw_move(input_device)  
-                    parse_cartesian_coordinates(raw_move, board_width) 
-                  end 
+    fetch_input = fn() ->
+                    raw_move = ask_for_raw_move(input_device)
+                    parse_cartesian_coordinates(raw_move, board_width)
+                  end
     error_message = "Invalid move: please try again."
     validate_input(fetch_input, valid_input, error_message)
   end
 
   def ask_board_size(input_device, valid_input) do
     announce_board_size_selection()
-    fetch_input = fn() -> 
+    fetch_input = fn() ->
                     IO.gets(input_device, "\n") |> String.trim() |> string_to_integer_or_nil()
-                  end 
+                  end
     error_message = "Invalid size: please try again. Only 3 or 4 are available"
     validate_input(fetch_input, valid_input, error_message)
   end
@@ -127,9 +126,9 @@ defmodule UI.Console do
 
   def ask_game_mode(input_device, valid_input) do
     announce_game_mode_selection()
-    fetch_input = fn() -> 
+    fetch_input = fn() ->
                     IO.gets(input_device, "\n") |> String.trim() |> game_mode_map()
-                  end 
+                  end
     error_message = "Invalid mode: please try again. Only 1-6 are available"
     validate_input(fetch_input, valid_input, error_message)
   end
@@ -182,7 +181,7 @@ defmodule UI.Console do
 
   def announce_next_move(game) do
     current_player = Game.get_current_player(game)
-    clear_and_print "It is " <> Atom.to_string(current_player.mark) <> 
+    clear_and_print "It is " <> Atom.to_string(current_player.mark) <>
                     "'s turn, please pick a move:" <>
                     render_board(game.board, %{empty: " ", x: "x", o: "o"} )
   end
@@ -196,7 +195,7 @@ defmodule UI.Console do
     send_cursor_to_top = IO.ANSI.home()
     IO.puts clear_screen
     IO.puts send_cursor_to_top
-    IO.puts message 
+    IO.puts message
   end
 
   defp print(message) do

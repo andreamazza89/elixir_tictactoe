@@ -1,7 +1,6 @@
 defmodule UI.ConsoleTest do
   use ExUnit.Case
   import TestHelpers
-  import ExUnit.CaptureIO
   import PromptRegexes
 
   describe "asking the user for game options" do
