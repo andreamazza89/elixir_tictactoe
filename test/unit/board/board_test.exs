@@ -19,18 +19,31 @@ defmodule BoardTest do
   end
 
 
+  describe "creating a custom-sized board" do
+
+    test "generates a 3-wide board" do
+      assert Board.create_board(3) === create_board([size: 3, x: [], o: []])
+    end
+    
+    test "generates a 4-wide board" do
+      assert Board.create_board(4) === create_board([size: 4, x: [], o: []])
+    end
+
+  end
+
+
   describe "board size" do
     
     test "defaults to size three" do
       three_board = %Board{}
 
-      assert Board.size(three_board) === 3
+      assert Board.width(three_board) === 3
     end
 
     test "knows its size" do
       two_board = %Board{cells: [:empty,:empty,:empty,:empty]}
 
-      assert Board.size(two_board) === 2
+      assert Board.width(two_board) === 2
     end
 
   end

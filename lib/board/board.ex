@@ -1,13 +1,19 @@
 defmodule Board do
   defstruct cells: [:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty,:empty]
 
+  def create_board(size) do
+    largest_index = (size * size) - 1
+    cells = Enum.map((0..largest_index), fn(_) -> :empty end)
+    %Board{cells: cells}
+  end
+
   def add_move(board = %Board{}, {cell_index, players_mark}) do
     old_cells = board.cells
     new_cells = List.replace_at(old_cells, cell_index, players_mark)
     %Board{board | cells: new_cells}
   end
 
-  def size(board = %Board{}) do
+  def width(board = %Board{}) do
     number_of_cells = length(board.cells)
     :math.sqrt(number_of_cells) |> round
   end
@@ -49,16 +55,43 @@ defmodule Board do
     Enum.all?(List.flatten(rows_cols_diags), fn(cell) -> cell !== :empty end)
   end
 
-  def get_rows([a,b,c,d,e,f,g,h,i]) do
-    [[a,b,c],[d,e,f],[g,h,i]]
+  defp get_rows(cells) do
+    board_width = width(%Board{cells: cells})
+    Enum.chunk(cells, board_width)
   end
 
-  defp get_columns([a,b,c,d,e,f,g,h,i]) do
-    [[a,d,g],[b,e,h],[c,f,i]]
+  defp get_columns(cells) do
+    board_width = width(%Board{cells: cells})
+    do_get_columns(cells, [], board_width)
   end
 
-  defp get_diagonals([a,_b,c,_d,e,_f,g,_h,i]) do
-    [[a,e,i],[g,e,c]]
+  defp do_get_columns([], columns, 0) do
+    columns
+  end
+
+  defp do_get_columns(cells, columns, current_column) do
+    this_column = Enum.take_every(cells, current_column)
+    remaining_cells = Enum.drop_every(cells, current_column)
+    do_get_columns(remaining_cells, columns ++ [this_column], current_column - 1)
+  end
+
+   defp get_diagonals(cells) do
+    board_width = width(%Board{cells: cells})
+    rows = get_rows(cells) 
+    reverse_rows = Enum.reverse(rows)
+    downwards = do_get_diagonals(rows, [], board_width)
+    upwards = do_get_diagonals(reverse_rows, [], board_width)
+    [downwards, upwards]
+  end
+
+  defp do_get_diagonals(_rows, diagonal, 0) do
+    diagonal
+  end
+
+  defp do_get_diagonals(rows, diagonal, current_column) do
+    zero_adjusted_column = current_column - 1
+    cell_to_add = rows |> Enum.at(zero_adjusted_column) |> Enum.at(zero_adjusted_column)
+    do_get_diagonals(rows, diagonal ++ [cell_to_add], current_column - 1 )
   end
 
 end

@@ -20,6 +20,14 @@ defmodule Game.RunnerTest do
       assert game_created === expected_game
     end
 
+    test "creates the game as requested by the UI example three" do
+      game_created = Game.Runner.setup_game(StubUserInterfaceWantsBoardSizeFour, "double_input_device") 
+      player_one = %Player.LinearCpu{mark: :x}      
+      player_two = %Player.LinearCpu{mark: :o}
+      expected_game = %Game{board: create_board([size: 4, x: [], o: []]), players: {player_one, player_two}}
+      assert game_created === expected_game
+    end
+
   end
 
 
@@ -46,8 +54,8 @@ defmodule Game.RunnerTest do
     end
 
     test "delegates to the UI when the game results in a win, including the winner (two)" do
-      win_game = create_board([x: [1,2], o: [4,5,6]])
-      win_game = %Game{board: win_game, players: {"player_one", "player_two"}} 
+      win_board = create_board([x: [1,2], o: [4,5,6]])
+      win_game = %Game{board: win_board, players: {"player_one", "player_two"}} 
       user_interface = SpyUserInterface
 
       Game.Runner.game_loop(win_game, user_interface)

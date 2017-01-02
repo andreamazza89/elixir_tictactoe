@@ -78,4 +78,10 @@ defmodule UI.GameFactoryTest do
     {%Player.LinearCpu{}, %Player.Human{}} = game.players
   end
 
+
+  test "creates a game with a custom-sized board" do
+    game = GameFactory.create_game([board_size: 4, mode: :human_v_linear_machine, swap_order: true])
+    assert Board.width(game.board) === 4
+  end
+
 end

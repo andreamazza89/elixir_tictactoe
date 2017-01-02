@@ -4,7 +4,7 @@ defmodule ElixirRomanNumerals.Mixfile do
   def project do
     [
       app: :elixir_tictactoe,
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.3",
       escript: [main_module: PlayGame],
       elixirc_paths: elixirc_paths(Mix.env),
