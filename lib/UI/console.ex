@@ -162,11 +162,11 @@ defmodule UI.Console do
   end
 
   def ask_play_again?(input_device) do
-    print "Would you like to play again?"
+    print "Would you like to play again? (y/n)"
     user_input = IO.gets(input_device, "\n")
     case user_input do
       "y\n" -> true
-      "n\n" -> false
+      _ -> false
     end
   end
 

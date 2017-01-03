@@ -92,7 +92,7 @@ defmodule UI.ConsoleTest do
 
     test "parses user-selected swap choice, user does not want to swap (no)" do
       user = create_input_stream("no\n")
-      assert UI.Console.ask_swap_play_order(user) === false 
+      assert UI.Console.ask_swap_play_order(user) === false
     end
 
   end
@@ -100,34 +100,40 @@ defmodule UI.ConsoleTest do
 
   describe "prompts" do
 
-    test "prompts the current player for a move, showing the board" do 
+    test "prompts the current player for a move, showing the board" do
       empty_board = create_board([x: [], o: []])
       player_one = %Player.Human{mark: :x}
       player_two = "player_two"
-      game = %Game{board: empty_board, players: {player_one, player_two}}      
+      game = %Game{board: empty_board, players: {player_one, player_two}}
       action = fn() -> UI.Console.announce_next_move(game) end
-  
+
       assert_console_output_matches(clear_screen_regex, action)
       assert_console_output_matches(next_move_prompt_regex, action)
       assert_console_output_matches(empty_board_regex(game), action)
     end
 
     test "prompts the current player to play again" do
-      input_stream = create_input_stream("y\nn\n")
+      input_stream = create_input_stream("y\n")
       action = fn() -> UI.Console.ask_play_again?(input_stream) end
-      
+
       assert_console_output_matches(play_again_regex, action)
     end
 
-    test "returns the parsed user choice (play again? yes!)" do
+    test "returns the parsed user choice (play again? y)" do
       input_stream = create_input_stream("y\n")
-  
+
       assert UI.Console.ask_play_again?(input_stream) === true
     end
 
-    test "returns the parsed user choice (play again? no!)" do
+    test "returns the parsed user choice (play again? n)" do
       input_stream = create_input_stream("n\n")
-  
+
+      assert UI.Console.ask_play_again?(input_stream) === false
+    end
+
+    test "treats anything other than 'y' as a no" do
+      input_stream = create_input_stream("randomletters\n")
+
       assert UI.Console.ask_play_again?(input_stream) === false
     end
 

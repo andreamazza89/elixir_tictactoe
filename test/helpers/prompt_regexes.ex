@@ -17,11 +17,11 @@ defmodule PromptRegexes do
   end
 
   def announce_draw_regex do
-    ~r{It was a draw!} 
+    ~r{It was a draw!}
   end
-  
+
   def play_again_regex do
-    ~r{Would you like to play again\?}
+    ~r{Would you like to play again\? \(y\/n\)}
   end
 
   def ask_board_size_regex do
@@ -41,6 +41,6 @@ defmodule PromptRegexes do
       4 - human vs clever machine
       5 - dumb machine vs clever machine
       6 - clever machine vs clever machine
-    """ 
+    """
   end
 end
